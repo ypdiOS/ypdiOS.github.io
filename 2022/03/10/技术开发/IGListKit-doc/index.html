@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>IGListKit框架解析 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="iOS,Git" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：易金鑫  一、前言IGListKit这个框架是由Instagram团队开发的属于一个数据驱动的UICollectionView框架，用于构建一个快速灵活的列表控件。 二、背景做App开发过程中，一开始总是编写一些简单的页面，随着版本迭代，功能不断增加，页面越来越复杂，当功能达到一定规模，修改的效率和质量都越来越低，因为功能已经蠕变，大量视图的堆积的控制器修改起来越来越棘手，这个时候就体现了拥">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IGListKit框架解析">
+<meta property="og:url" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：易金鑫  一、前言IGListKit这个框架是由Instagram团队开发的属于一个数据驱动的UICollectionView框架，用于构建一个快速灵活的列表控件。 二、背景做App开发过程中，一开始总是编写一些简单的页面，随着版本迭代，功能不断增加，页面越来越复杂，当功能达到一定规模，修改的效率和质量都越来越低，因为功能已经蠕变，大量视图的堆积的控制器修改起来越来越棘手，这个时候就体现了拥">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/listkit_1.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/listkit_2.png">
+<meta property="article:published_time" content="2022-03-10T14:24:21.007Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.008Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="iOS">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/listkit_1.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file active"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-技术开发/IGListKit-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/">技术开发</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/Git/" rel="tag">Git</a>, <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">
+            <time datetime="2022-03-10T14:24:21.007Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            IGListKit框架解析
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：易金鑫"><a href="#作者：易金鑫" class="headerlink" title="作者：易金鑫"></a>作者：易金鑫</h6><hr>
+<!--
+### 一.[IGListKit文档](https://instagram.github.io/IGListKit/index.html) -->
+<h3 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h3><p><a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>这个框架是由Instagram团队开发的属于一个数据驱动的UICollectionView框架，用于构建一个快速灵活的列表控件。</p>
+<h3 id="二、背景"><a href="#二、背景" class="headerlink" title="二、背景"></a>二、背景</h3><p>做App开发过程中，一开始总是编写一些简单的页面，随着版本迭代，功能不断增加，页面越来越复杂，当功能达到一定规模，修改的效率和质量都越来越低，因为功能已经蠕变，大量视图的堆积的控制器修改起来越来越棘手，这个时候就体现了拥有一个好的架构的优势了。而<a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>就是为这而被设计出来，下面我们简单说一说它吧。</p>
+<h3 id="三、IGListKit的特点："><a href="#三、IGListKit的特点：" class="headerlink" title="三、IGListKit的特点："></a>三、IGListKit的特点：</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 数据驱动（数据改变 -&gt; Diff算法 -&gt; update界面）</span><br><span class="line">2. 可重复单元和组件的更好体系结构</span><br><span class="line">3. 解耦的差异算法</span><br><span class="line">4. 可以为数据模型自定义差异算法</span><br><span class="line">5. 可扩展的API</span><br></pre></td></tr></table></figure>
+
+<h3 id="四、IGListKit工作原理"><a href="#四、IGListKit工作原理" class="headerlink" title="四、IGListKit工作原理"></a>四、IGListKit工作原理</h3><p>使用<a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>，您可以提供要在UICollectionView中显示的对象数组。 对于每种类型的对象，适配器adapter都会创建一个节控制器(section controller)，它具有创建单元格的所有细节。</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/listkit_1.png" class>
+<center>图 1-1</center>
+
+<h3 id="五、IGListKit使用"><a href="#五、IGListKit使用" class="headerlink" title="五、IGListKit使用"></a>五、IGListKit使用</h3><h4 id="1-CocoaPods"><a href="#1-CocoaPods" class="headerlink" title="1. CocoaPods"></a>1. CocoaPods</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod &#x27;IGListKit&#x27;, &#x27;~&gt; 4.0&#x27;</span><br></pre></td></tr></table></figure>
+<h4 id="2-IGListAdapter初始化"><a href="#2-IGListAdapter初始化" class="headerlink" title="2. IGListAdapter初始化"></a>2. IGListAdapter初始化</h4><p>在控制器中布局好CollectionView之后，初始化IGListAdapter实例adapter，将CollectionView绑定给adapter，然后控制器实现adapter的DataSource协议，该协议实现为adapter提供节点数量以及对应节点的节点控制器类型。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, strong) IGListAdapter *adapter;</span><br><span class="line"></span><br><span class="line">- (void)_initAdapter &#123;</span><br><span class="line">    /// 初始化适配器</span><br><span class="line">    self.adapter = [[IGListAdapter alloc] initWithUpdater:[IGListAdapterUpdater new] viewController:self workingRangeSize: 3];</span><br><span class="line">    /// 绑定一个适配器弱应用的UICollectionView列表对象</span><br><span class="line">    self.adapter.collectionView = self.collectionView;</span><br><span class="line">    /// 指定数据源代理</span><br><span class="line">    self.adapter.dataSource = self;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>IGListAdapter初始化有三个参数:</p>
+<ol>
+<li>IGListAdapterUpdater: 是一个实现了IGListUpdatingDelegate协议的对象，负责处理row和section的刷新。</li>
+<li>viewController: 是一个容纳适配器的UIViewController。 IGListKit稍后使用此视图控制器导航到其他视图控制器。</li>
+<li>workingRangeSize：是working range的大小，允许您为可见框外部的部分准备内容，可以理解为预加载范围。</li>
+</ol>
+<p>IGListAdapter的DataSource协议：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">/// 数据为空时，显示的空视图，默认没有</span><br><span class="line">- (nullable UIView *)emptyViewForListAdapter:(nonnull IGListAdapter *)listAdapter &#123;</span><br><span class="line">    return  nil;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 节点数量</span><br><span class="line">- (NSArray&lt;id&lt;IGListDiffable&gt;&gt; *)objectsForListAdapter:(IGListAdapter *)listAdapter &#123;</span><br><span class="line">    return self.dataList;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 节点类型（可以根据不通的object 返回不同的节点类型）</span><br><span class="line">- (nonnull IGListSectionController *)listAdapter:(nonnull IGListAdapter *)listAdapter sectionControllerForObject:(nonnull id)object &#123;</span><br><span class="line">    return [CKWorkRangeSection new];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-IGListSectionController创建"><a href="#3-IGListSectionController创建" class="headerlink" title="3. IGListSectionController创建"></a>3. IGListSectionController创建</h4><p>IGListSectionController是一个可以说是为IGListAdapter提供实际数据的节点控制器，在这个节点控制器中，持有的collectionContext是一个弱引用上下文对象，其中包含有关使用节控制器的适配器、集合视图和视图控制器的信息。而当adapter刷新到对应数据时，就会通过datasource代理找到对应的节点控制器来更新UI，IGListSectionController需要实现4个方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">/// 单元格数量</span><br><span class="line">- (NSInteger)numberOfItems &#123;</span><br><span class="line">    return 2;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 单元格大小</span><br><span class="line">- (CGSize)sizeForItemAtIndex:(NSInteger)index &#123;</span><br><span class="line">    const CGFloat width = self.collectionContext.containerSize.width;</span><br><span class="line">    const CGFloat height = index == 0 ? 250 : 30;</span><br><span class="line">    return CGSizeMake(width, height);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 单元格类型</span><br><span class="line">- (__kindof UICollectionViewCell *)cellForItemAtIndex:(NSInteger)index &#123;</span><br><span class="line">    const Class cellClass = index == 0 ? [CKDemoImageCell class] : [CKDemoLabelCell class];</span><br><span class="line">    UICollectionViewCell&lt;IGListBindable&gt; *cell = [self.collectionContext dequeueReusableCellOfClass:cellClass forSectionController:self atIndex:index];</span><br><span class="line">    [cell bindViewModel:[self _urlString]];</span><br><span class="line">    return cell;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 更新整个节点数据</span><br><span class="line">- (void)didUpdateToObject:(id)object &#123;</span><br><span class="line">    if (![object isKindOfClass:[NSString class]]) &#123;</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line">    self.object = object;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 选中对应单元格</span><br><span class="line">- (void)didSelectItemAtIndex:(NSInteger)index &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="4-数据模型"><a href="#4-数据模型" class="headerlink" title="4. 数据模型"></a>4. 数据模型</h4><p>前面提到了控制器实现了IGListAdapter的datasource方法，里面提供的数据源必须要遵循IGListDiffable协议，实现该协议的对象会有两个协议方法需要实现，这里我给NSString添加了分类，让其遵循了这个协议：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">#import &quot;NSString+Extension.h&quot;</span><br><span class="line"></span><br><span class="line">@implementation NSString (Extension)</span><br><span class="line"></span><br><span class="line">- (id&lt;NSObject&gt;)diffIdentifier &#123;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">/// 差异比对 --在数据刷新是，差异算法用于比对数据对象是否是同一个</span><br><span class="line">- (BOOL)isEqualToDiffableObject:(id&lt;IGListDiffable&gt;)object &#123;</span><br><span class="line">    return [self isEqual:object];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<h4 id="5-刷新"><a href="#5-刷新" class="headerlink" title="5. 刷新"></a>5. 刷新</h4><p>IGListAdapter提供特定的刷新方法，不在调用列表原生的系统API刷新，在数据改变后，需要界面即使刷新，调用一次就行，IGListAdapter会通过特定的差异算法进行比对之后再使得弱绑定的CollectionView刷新。该方法调用如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)_initDate &#123;</span><br><span class="line">    [self.dataList removeAllObjects];</span><br><span class="line">    for (int i = 200; i &lt; 300; i++) &#123;</span><br><span class="line">         [self.dataList addObject:@(i).stringValue];</span><br><span class="line">    &#125;</span><br><span class="line">    /// 刷新数据</span><br><span class="line">    /// completion返回的是BOOL值，代表是否完成刷新，用过UIView的动画不会陌生。</span><br><span class="line">    [self.adapter performUpdatesAnimated:YES completion:nil];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="6-效果图"><a href="#6-效果图" class="headerlink" title="6. 效果图"></a>6. 效果图</h4><p>在刷新之后，就可以看到正常的列表样式了，如图1-2：</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/listkit_2.png" class>
+<center>图 2-1</center>
+
+<h3 id="六、性能"><a href="#六、性能" class="headerlink" title="六、性能"></a>六、性能</h3><p><a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>对于collectionView列表的持有之后，对于列表的滚动和刷新操作，没有增加额外的负重，CPU和FPS保持了原生列表的性能，所以不用考虑对于性能的影响。而且在于刷新上面，<a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>采用了差异算法，用户可以对模型自定义该算法实现。</p>
+<h3 id="七、高级用法"><a href="#七、高级用法" class="headerlink" title="七、高级用法"></a>七、高级用法</h3><ol>
+<li><p>workingRangeSize的使用：列表有一个可视区域，通常系统提供的控件只支持显示的单元格才会被赋值，当使用<a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>之后，这个workingRangeSize就提供未不可见区域向上和向下多少个区域预加载数据，如图片这些，就会在页面出来时，能够更加快速的展示给用户，而具体的大小就是你需要预加载的不可见区域的单元格数量，默认值为0.</p>
+</li>
+<li><p>IGListDiffKit: 这个库核心是为两个集合之间的索引创建差异，<a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>内部就是使用了这个库创建差异来高效的更新单元格。如果不使用<a target="_blank" rel="noopener" href="https://github.com/Instagram/IGListKit">IGListKit</a>的时候，也可以单独使用这个库来创建差异，然后会根据算法计算出IGListIndexPathResult，拿到差异结果之后，我们就可以对列表进行增、删、移动操作了。</p>
+</li>
+</ol>
+<ul>
+<li>差异算法API：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">NS_SWIFT_NAME(ListDiffPaths(fromSection:toSection:oldArray:newArray:option:))</span><br><span class="line">FOUNDATION_EXTERN IGListIndexPathResult *IGListDiffPaths(NSInteger fromSection,</span><br><span class="line">                                                         NSInteger toSection,</span><br><span class="line">                                                         NSArray&lt;id&lt;IGListDiffable&gt;&gt; *_Nullable oldArray,</span><br><span class="line">                                                         NSArray&lt;id&lt;IGListDiffable&gt;&gt; *_Nullable newArray,</span><br><span class="line">                                                         IGListDiffOption option);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+IGListIndexPathResult属性：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@property (nonatomic, copy, readonly) NSArray&lt;NSIndexPath *&gt; *inserts;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy, readonly) NSArray&lt;NSIndexPath *&gt; *deletes;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy, readonly) NSArray&lt;NSIndexPath *&gt; *updates;</span><br><span class="line"></span><br><span class="line">@property (nonatomic, copy, readonly) NSArray&lt;IGListMoveIndexPath *&gt; *moves;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+具体使用：<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">- (void)_reload &#123;</span><br><span class="line">    /// 获取数据</span><br><span class="line">    NSArray *oldArray = [self _oldDatas];</span><br><span class="line">    NSArray *newArray = [self _newDatas];</span><br><span class="line">    /// 计算出差异结果</span><br><span class="line">    IGListIndexPathResult *result = IGListDiffPaths(0, 0, oldArray, newArray, IGListDiffEquality);</span><br><span class="line">    __weak typeof(self) weakSelf = self;</span><br><span class="line">    /// 更新界面</span><br><span class="line">    [self.collectionView performBatchUpdates:^&#123;</span><br><span class="line">        [weakSelf.collectionView deleteItemsAtIndexPaths:result.deletes];</span><br><span class="line">        [weakSelf.collectionView insertItemsAtIndexPaths:result.inserts];</span><br><span class="line">        for (IGListMoveIndexPath *p in result.moves) &#123;</span><br><span class="line">            [weakSelf.collectionView moveItemAtIndexPath:p.from toIndexPath:p.to];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; completion:^(BOOL finished) &#123;</span><br><span class="line"></span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="八、针对项目使用优缺点："><a href="#八、针对项目使用优缺点：" class="headerlink" title="八、针对项目使用优缺点："></a>八、针对项目使用优缺点：</h3><ul>
+<li><p>优点：</p>
+<ol>
+<li>通过数据驱动列表展示，构建的单元格更加灵活，易扩展。</li>
+<li>是一个利于组件化和列表控件复用的框架。</li>
+<li>提供自定义工作区域的大小。</li>
+<li>通过差异算法更新单元格，更加高效，可更具数据模型自定义差异算法。</li>
+</ol>
+</li>
+<li><p>缺点：</p>
+<ol>
+<li>一个全新的框架，替换旧的系统列表控件工作量大，成本高。</li>
+<li>所有的数据模型需要实现差异算法。</li>
+<li>由于CollectionView已经绑定给IGListAdapter，所以客户端不应调用任何UICollectionView涉及重新加载、插入、删除或以其他方式更新单元格和索引路径的API。</li>
+<li>在iOS 10中，引入了一个新的单元预取API，启用此功能会大大降低滚动性能，所以建议在Swift中设置isPrefetchingEnabled为NO(false)，默认值为true。</li>
+</ol>
+</li>
+</ul>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    iMessage调研
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">全民Party歌词文档</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

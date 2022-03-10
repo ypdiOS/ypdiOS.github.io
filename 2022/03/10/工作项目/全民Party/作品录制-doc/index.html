@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>作品录制文档 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="git" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：魏乔森 总体流程图：  特别说明：以下（点唱音频&#x2F;MV，快唱音频&#x2F;MV，说说音频&#x2F;MV，创作音频&#x2F;MV，合唱)统称为心情，相关流程和弹唱分开说明一、资源准备流程1.1、心情资源准备阶段流程图：  相关类：CKFeedRecordPrepareBaseCtrl：资源准备页基类 CKFeedRecordPrepareSelectCtrl：点唱资源准备页 CKFeedRecordPrepareQu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="作品录制文档">
+<meta property="og:url" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：魏乔森 总体流程图：  特别说明：以下（点唱音频&#x2F;MV，快唱音频&#x2F;MV，说说音频&#x2F;MV，创作音频&#x2F;MV，合唱)统称为心情，相关流程和弹唱分开说明一、资源准备流程1.1、心情资源准备阶段流程图：  相关类：CKFeedRecordPrepareBaseCtrl：资源准备页基类 CKFeedRecordPrepareSelectCtrl：点唱资源准备页 CKFeedRecordPrepareQu">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%88%B6%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E8%B5%84%E6%BA%90%E5%87%86%E5%A4%87%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BC%B9%E5%94%B1%E8%B5%84%E6%BA%90%E5%87%86%E5%A4%87%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E8%B5%84%E6%BA%90%E5%87%86%E5%A4%87%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%BD%95%E5%88%B6%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BC%B9%E5%94%B1%E5%BD%95%E5%88%B6%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BD%95%E5%88%B6%E6%B5%81%E7%A8%8B%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E7%BC%96%E8%BE%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E7%BC%96%E8%BE%91%E6%B5%81%E7%A8%8B%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="article:published_time" content="2022-03-10T14:24:21.000Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.000Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%88%B6%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file active"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-工作项目/全民Party/作品录制-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/">工作项目</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/">全民Party</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/git/" rel="tag">git</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">
+            <time datetime="2022-03-10T14:24:21.000Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            作品录制文档
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：魏乔森"><a href="#作者：魏乔森" class="headerlink" title="作者：魏乔森"></a>作者：魏乔森</h6><hr>
+<h2 id="总体流程图："><a href="#总体流程图：" class="headerlink" title="总体流程图："></a>总体流程图：</h2><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%88%B6%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<h3 id="特别说明：以下（点唱音频-MV，快唱音频-MV，说说音频-MV，创作音频-MV，合唱-统称为心情，相关流程和弹唱分开说明"><a href="#特别说明：以下（点唱音频-MV，快唱音频-MV，说说音频-MV，创作音频-MV，合唱-统称为心情，相关流程和弹唱分开说明" class="headerlink" title="特别说明：以下（点唱音频/MV，快唱音频/MV，说说音频/MV，创作音频/MV，合唱)统称为心情，相关流程和弹唱分开说明"></a>特别说明：以下（点唱音频/MV，快唱音频/MV，说说音频/MV，创作音频/MV，合唱)统称为心情，相关流程和弹唱分开说明</h3><h2 id="一、资源准备流程"><a href="#一、资源准备流程" class="headerlink" title="一、资源准备流程"></a>一、资源准备流程</h2><h3 id="1-1、心情资源准备阶段"><a href="#1-1、心情资源准备阶段" class="headerlink" title="1.1、心情资源准备阶段"></a>1.1、心情资源准备阶段</h3><h3 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E8%B5%84%E6%BA%90%E5%87%86%E5%A4%87%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<h3 id="相关类："><a href="#相关类：" class="headerlink" title="相关类："></a>相关类：</h3><p>CKFeedRecordPrepareBaseCtrl：资源准备页基类</p>
+<p>CKFeedRecordPrepareSelectCtrl：点唱资源准备页</p>
+<p>CKFeedRecordPrepareQuickCtrl：快唱资源准备页</p>
+<p>CKFeedRecordPrepareTalkCtrl：说说资源准备页</p>
+<p>CKFeedRecordPrepareCreateCtrl：创作资源准备页</p>
+<p>CKFeedRecordPrepareChorusCtrl：合唱资源准备页</p>
+<p>CKMVResourceDownloader：说说/快唱/创作/合唱台本，伴奏资源下载器</p>
+<p>DownloadBeatManager：官方伴奏下载器（点唱/合唱伴奏为官方伴奏时使用此下载器下载伴奏资源）        </p>
+<p>补充说明：心情资源准备页只是从服务器请求台本或伴奏详情，不做文件下载，文件下载均在资源下载页（和录制准备页是同一个控制器，通过状态控制界面显示）下载，创作目前暂无资源下载，进入资源准备页后直接进入录制准备页</p>
+<h3 id="1-2、弹唱资源准备阶段"><a href="#1-2、弹唱资源准备阶段" class="headerlink" title="1.2、弹唱资源准备阶段"></a>1.2、弹唱资源准备阶段</h3><h3 id="流程图：-1"><a href="#流程图：-1" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BC%B9%E5%94%B1%E8%B5%84%E6%BA%90%E5%87%86%E5%A4%87%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<h3 id="相关类：-1"><a href="#相关类：-1" class="headerlink" title="相关类："></a>相关类：</h3><p>CKFeedRecordPreparePickCtrl：弹唱资源准备页</p>
+<p>CKPlayGlobalDownloader：弹唱资源文件下载器        </p>
+<p>补充说明：弹唱准备页既请求曲谱详情，同时也下载相关资源文件（这也是和心情资源准备阶段的区别），然后进入弹唱准备页</p>
+<h3 id="类结构图："><a href="#类结构图：" class="headerlink" title="类结构图："></a>类结构图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E8%B5%84%E6%BA%90%E5%87%86%E5%A4%87%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" class>
+
+<h2 id="二、录制流程"><a href="#二、录制流程" class="headerlink" title="二、录制流程"></a>二、录制流程</h2><h3 id="2-1、心情录制阶段"><a href="#2-1、心情录制阶段" class="headerlink" title="2.1、心情录制阶段"></a>2.1、心情录制阶段</h3><h3 id="流程图：-2"><a href="#流程图：-2" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%BD%95%E5%88%B6%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<p>补充说明：</p>
+<p>录制框架启动（创作录制需同时启动科大讯飞语音识别框架）前需要指定伴奏文件路径，无伴奏文件则传空，创作语音识别文本作为编辑页使用的字幕，其余录制以资源文件中的歌词为字幕（需根据录制时长进行过滤，使用录制时间范围内的歌词），如果没有歌词，则无字幕</p>
+<p>视频录制：框架启动是在视频框架启动后再启动音频录音框架，待2个框架均启动完成后再开始录制，录制视频的同时也录制音频</p>
+<p>暂停回溯：暂停时整个流程依然是在录制中状态，暂停时框架停止（录音/录视频）和播放伴奏，恢复录制时向框架传入伴奏播放时间和录制开始时间后恢复框架录制，框架处理录制音频补齐，截取操作（暂停回溯功能只在合唱，快唱，点唱中歌词文件和伴奏文件合格才有）</p>
+<p>资源补充说明：快唱/说说资源是台本资源，其内部包括了专属伴奏，专属背景，歌词，台本资源，创作目前资源只有在录制前用户选择的伴奏资源，如果未选择，则无资源，点唱资源主要是官方伴奏资源，如果是清唱或导入伴奏则无所需下载资源，合唱分为快唱合唱和点唱合唱，如果是快唱合唱则下载对应快唱台本资源，点唱合唱则下载对应官方伴奏资源，合唱除以上资源还包括合唱作品用户干声文件资源</p>
+<p>异常操作：退后台，拔耳机等操作在有暂停回溯功能时暂停录制，否则直接停止录制流程</p>
+<h3 id="相关类：-2"><a href="#相关类：-2" class="headerlink" title="相关类："></a>相关类：</h3><p>CKMVEditSettingManager（核心类，单例）：该类在整个心情流程中使用，该类有整个制作流程所需大部分参数，在整个流程结束后需要重置相关参数</p>
+<p>CKMVBaseViewCtrl：作品制作流程中的所有控制器基类</p>
+<p>CKMVSingRecordCtrl：快唱资源下载页，准备页，录制页（同一页面通过CKMVEditSettingManager中录制状态控制界面显示，下同）</p>
+<p>CKMVSpeakRecordCtrl：说说资源下载页，准备页，录制页</p>
+<p>CKMVCreateRecordCtrl：创作资源下载页，准备页，录制页</p>
+<p>CKMVChorusRecordCtrl：合唱资源下载页，准备页，录制页</p>
+<p>CKSelectSongsRecordCtrl：点唱资源下载页，准备页，录制页</p>
+<p>CKRoomTuningViewCtrl：点唱，快唱，合唱调音面板（设置录制伴奏，人声音量等）</p>
+<p>CKMVRecordVoiceCheckCtrl：说说，创作调音面板（设置录制伴奏，人声音量）</p>
+<p>CKMVStartRecordBottomView：快唱/说说/创作/合唱底部按钮控件（录制按钮，暂停按钮，调音等）</p>
+<p>CKMVSelectSongsBottomView：点唱底部按钮控件（录制按钮，调音等）</p>
+<p>CKMVRecordContentView：说说/快唱中间歌词，进音灯UI控件（通过CKMVEditSettingManager中录制状态控制不同显示）</p>
+<p>CKMVAudioNameContentView：说说/创作选择伴奏名称跑马灯控件</p>
+<p>CKMVMusicSelectView：说说/创作选择伴奏控件（此处选择的伴奏会作为录制时播放的伴奏）</p>
+<p>CKMVResourceClassify：选择伴奏页分类对象</p>
+<p>CKMVResource：整个心情流程中伴奏和背景图资源对象</p>
+<p>CKMVScenario：台本对象（其内部包含伴奏文件，歌词文件，背景资源文件）</p>
+<p>MCGraphicsVideo：MV录制框架类</p>
+<p>MCAudioRecorder：音频录制框架类</p>
+<p>IFlySpeechRecognizer：科大讯飞语音识别框架类</p>
+<p>StreamRecognizer：科大讯飞语音识别中间类（内部封装IFlySpeechRecognizer）</p>
+<p>CKVideoFabricator：说说/快唱/创作 MV制作类（内部封装CKVideoFabricator）</p>
+<p>SpeechRecognizer：心情录制框架封装类（内部封装了StreamRecognizer，CKVideoFabricator，MCAudioRecorder，目前只有在说说默认录制流程和创作才需要语音识别），使用此类启动和停止录音框架</p>
+<p>RecordScoreHelper：评分辅助类，处理框架回调，协助对应控件做对应的动画</p>
+<p>CKWorkScoreProgressView：评分等级进度控件</p>
+<p>CKWorkMidiView：midi显示控件（内部包含了评分相关动画显示）</p>
+<h3 id="2-2、弹唱录制阶段"><a href="#2-2、弹唱录制阶段" class="headerlink" title="2.2、弹唱录制阶段"></a>2.2、弹唱录制阶段</h3><h3 id="流程图：-3"><a href="#流程图：-3" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BC%B9%E5%94%B1%E5%BD%95%E5%88%B6%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<p>补充说明：弹唱录制中会有练习框架/录音框架2个框架，在准备页中播放和弦等相关音频资源会使用练习框架进行播放，录制中是使用录音框架播放</p>
+<p>异常操作：退后台，拔耳机等异常操作直接停止录制流程</p>
+<h3 id="相关类：-3"><a href="#相关类：-3" class="headerlink" title="相关类："></a>相关类：</h3><p>MCBeatPractise：弹唱练习框架对象</p>
+<p>MCBeatRecorder：弹唱录制框架对象        </p>
+<p>CKPlayRecordModel：弹唱-录制页model，内部封装MCBeatPractise和MCBeatRecorder以及录制需要的相关的参数</p>
+<p>CKPlayRecordViewCtrl ：弹唱准备页，录制页（通过CKPlayRecordModel的isRecording来控制显示准备页还是录制中）</p>
+<p>CKPlayTone：弹唱-音调基类</p>
+<p>CKPlayLyricTone：弹唱歌词中的音调对象，继承于CKPlayTone</p>
+<p>CKPlayFingering：弹唱指法对象</p>
+<p>CKPlayTimbre：音色对象（包含N个CKPlayFingering对象）</p>
+<p>CKPlayInstrument：乐器对象（包含N个CKPlayTimbre对象）</p>
+<p>CKPlayLyricView：弹唱歌词控件</p>
+<p>CKPlayAtmosphereView：弹奏和弦点击后屏幕2侧的氛围动画控件</p>
+<p>PlayScrollView：乐器切换控件（切换后会触发下载操作）</p>
+<p>CKPlayInstrumentDownloadCoverView：乐器下载时上面的蒙层</p>
+<p>CKPlayRecordBottomView：底部录制等按钮控件</p>
+<p>CKPlayToneTuningPanel：弹唱调音面板（设置录制录制伴奏，人声音量）</p>
+<p>CKPlayInstrumentPanel：乐器面板（乐器选择面板，选择不同乐器，会有不同和弦点击音效）</p>
+<p>CKPlayPickReplayViewCtrl：弹唱回放页（推荐的用户发布的弹唱效果展示）</p>
+<p>CKPlayChordView：和弦组控件，点击会播放对应和弦（录制页点击播放和弦，编辑页会展示对应和弦点击动画，发布页会生成对应涂层文件传入框架合成相关和弦点击动画）</p>
+<p>CKPlayPercussionView：打击控件，点击会播放打击音效    </p>
+<h3 id="类结构图：-1"><a href="#类结构图：-1" class="headerlink" title="类结构图："></a>类结构图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BD%95%E5%88%B6%E6%B5%81%E7%A8%8B%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" class>
+
+<h2 id="三、编辑流程"><a href="#三、编辑流程" class="headerlink" title="三、编辑流程"></a>三、编辑流程</h2><h3 id="3-1、心情编辑阶段"><a href="#3-1、心情编辑阶段" class="headerlink" title="3.1、心情编辑阶段"></a>3.1、心情编辑阶段</h3><h3 id="流程图：-4"><a href="#流程图：-4" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E7%BC%96%E8%BE%91%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<p>补充说明：编辑页就是作品录制后播放效果的预览页，用户可以在此处做作品相关编辑操作（如加贴图，编辑字幕，切换背景显示等）并查看编辑后的效果，此效果即为作品发布后的效果，所有编辑效果均是UI操作，所有编辑效果使用的资源数据（例：贴图资源对象，贴图缩放比例，旋转角度等）会使用CKMVEditSettingManager类中对应数据存储后在发布页使用合成完整作品</p>
+<h3 id="相关类：-4"><a href="#相关类：-4" class="headerlink" title="相关类："></a>相关类：</h3><p>CKMVEditViewCtrl：心情编辑页</p>
+<p>CKMVEditPreView：心情预览播放控件（内部封装了音频的预览视图和mv的视频播放视图）</p>
+<p>CKMVSubtitleEditView：预览区域字幕显示编辑控件</p>
+<p>CKMVEditPlayView：播放控制控件（内部封装了播放器）</p>
+<p>CKMVEditActionView：底部功能控件（选择弹起字幕面板，背景图面板等对应面板）</p>
+<p>CKMVFilmsTitlePanel：片头选择面板控件</p>
+<p>CKMVSubtitleV2Panel：字幕面板控件（可添加，删除，编辑字幕）</p>
+<p>CKMVBackViewPanel：背景图面板控件（可以选择官方背景或是自定义背景，自定义背景会根据录制时长设置最大显示数量）</p>
+<p>CKMVAudioPanel：伴奏面板控件（此处伴奏会作为编辑预览播放的伴奏，未选择则为录制页或草稿箱保存的伴奏）</p>
+<p>CKMVVoicePanel：调音面板控件（设置预览播放伴奏，人声音量等相关参数）</p>
+<p>CKMVStickerPanel：贴图面板控件（选择的贴图会以CKMVStickerOperateView对象添加到CKMVEditPreView上进行展示）</p>
+<p>CKMVStickerOperateView：预览区贴图编辑控件（有个数限制，目前最多为为10，有旋转缩放功能）</p>
+<p>CKFeedInfo：草稿箱作品对象（作品保存草稿后相关参数会以此对象对应参数存储）</p>
+<p>MCChorusPreviewer：合唱预览播放器</p>
+<p>MCAudioPreviewer：点唱，快唱，说说，创作预览音频播放器</p>
+<p>CKGrabSongPoolPlayer：MV录制时预览页视频播放器</p>
+<p>CKMVEditScoreView：顶部得分控件（等分等级展示）</p>
+<p>CKWorkScoreView：评分结果页（评分，等级动效展示）</p>
+<p>CKDraftsManager：草稿箱管理类（使用此类进行心情作品保存，删除）</p>
+<h3 id="3-2、弹唱编辑阶段"><a href="#3-2、弹唱编辑阶段" class="headerlink" title="3.2、弹唱编辑阶段"></a>3.2、弹唱编辑阶段</h3><p>补充说明：弹唱编辑整体流程和心情音频编辑流程大体一样（资源编辑面板只有背景图，调音，贴图，存储编辑数据使用CKPlayModel类），可参考上面心情编辑流程图</p>
+<h3 id="相关类：-5"><a href="#相关类：-5" class="headerlink" title="相关类："></a>相关类：</h3><p>CKPlayEditViewCtrl：编辑页</p>
+<p>CKPlayEditPreView：预览播放控件</p>
+<p>CKPlayEditContentView：预览区和弦和歌词显示控件</p>
+<p>CKPlayEditActionView：底部功能控件（同心情底部功能控件功能）</p>
+<p>CKPlayBgViewPanel：背景图面板控件（同心情背景图面板功能）</p>
+<p>CKPlayTuneViewPanel：调音面板控件（同心情调音面板功能）</p>
+<p>CKPlayStickerViewPanel：贴图面板控件（同心情贴图面板功能）</p>
+<p>CKPlayStickerOperateView：预览区贴图编辑控件（同心情预览区贴图编辑控件功能）</p>
+<p>CKPlayModel：弹唱通用数据模型，保存弹唱相关参数，在发布页会使用相关参数生成作品</p>
+<p>MCBeatPreviewer：弹唱预览播放器</p>
+<h3 id="类结构图：-2"><a href="#类结构图：-2" class="headerlink" title="类结构图："></a>类结构图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E7%BC%96%E8%BE%91%E6%B5%81%E7%A8%8B%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" class>
+
+<h2 id="四、发布流程"><a href="#四、发布流程" class="headerlink" title="四、发布流程"></a>四、发布流程</h2><h3 id="4-1、心情发布阶段"><a href="#4-1、心情发布阶段" class="headerlink" title="4.1、心情发布阶段"></a>4.1、心情发布阶段</h3><h3 id="流程图：-5"><a href="#流程图：-5" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%BF%83%E6%83%85%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<p>补充说明：发布页即是将编辑页编辑后的作品相关资源数据在此处通过框架进行音，视频合成，最终将编辑页相关数据合成一个和编辑页预览效果一致的视频后发布（文件上传使用七牛）</p>
+<h3 id="相关类：-6"><a href="#相关类：-6" class="headerlink" title="相关类："></a>相关类：</h3><p>CKMVReleaseCtrl：心情发布页</p>
+<p>CKShareSaveVideoToLocalViewCtrl：发布进度loading页</p>
+<p>CKMVReleaseFeaturesView：发布页功能控件</p>
+<p>CKMVReleaseFeatureModel：功能模型类</p>
+<p>CKMVReleaseHeaderView：封面控件</p>
+<p>MCAudioRender：音频合成器</p>
+<p>MCChorusRender：合唱音频合成器</p>
+<p>MKVideoRender：MV录制时使用</p>
+<p>MKImagesRender：背景图是自定义图或静态图时使用</p>
+<p>MKGifRender：背景图是GIF时使用</p>
+<p>补充说明：以上3个render会根据类型不同选择某一个作为合成视频所需的render</p>
+<p>MKRenderLayer：贴图或字幕图片使用（最终通过相关API加在合成视频的render上）</p>
+<p>MKRenderFadeAnimate：片头使用（最终通过相关API加在合成视频的render中）</p>
+<p>MKExporter：视频合成器（通过合成视频的render来生成视频）</p>
+<p>MKWaterRender：保存视频给视频添加水印使用</p>
+<p>MCFileLinker：音频文件补齐工具类</p>
+<p>CKFeedUploadTool（单例）：作品发布工具类，其内部封装了文件上传，与服务器接口交互功能，作品上传状态，上传进度也通过其参数回调</p>
+<h3 id="4-2、弹唱发布流程："><a href="#4-2、弹唱发布流程：" class="headerlink" title="4.2、弹唱发布流程："></a>4.2、弹唱发布流程：</h3><p>补充说明：弹唱发布流程和心情发布流程大体一样，在制作音频和视频部分会有部分区别，流程可参考心情发布流程图</p>
+<h3 id="相关类：-7"><a href="#相关类：-7" class="headerlink" title="相关类："></a>相关类：</h3><p>CKMVReleaseCtrlV2：弹唱发布页</p>
+<p>MCBeatRender：弹唱音频合成器</p>
+<p>视频合成相关类同心情制作视频合成相关类                </p>
+<h3 id="类结构图：-3"><a href="#类结构图：-3" class="headerlink" title="类结构图："></a>类结构图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/%E5%8F%91%E5%B8%83%E6%B5%81%E7%A8%8B%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" class>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    全民Party歌词文档
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">作品互动消息</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

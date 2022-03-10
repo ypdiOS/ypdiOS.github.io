@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>KaraParty歌词文档 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="iOS" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：：魏乔森 一、歌词解析流程图：  补充说明：歌词文件解析分为加密和非加密2种情况，最终结果都是将歌词文件解析成NSDictionary对象，将获得的NSDictionary对象解析成PhoneticLyricInfo（注音歌词对象）时包含歌词时间校验（如果是非纯文本歌词且歌词结束时间小于歌词开始时间，直接解析失败返回空歌词对象），抢唱歌词解析流程只是在普通歌词解析流程中多出了空位歌词解析逻辑">
+<meta property="og:type" content="article">
+<meta property="og:title" content="KaraParty歌词文档">
+<meta property="og:url" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：：魏乔森 一、歌词解析流程图：  补充说明：歌词文件解析分为加密和非加密2种情况，最终结果都是将歌词文件解析成NSDictionary对象，将获得的NSDictionary对象解析成PhoneticLyricInfo（注音歌词对象）时包含歌词时间校验（如果是非纯文本歌词且歌词结束时间小于歌词开始时间，直接解析失败返回空歌词对象），抢唱歌词解析流程只是在普通歌词解析流程中多出了空位歌词解析逻辑">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E5%B1%95%E7%A4%BA%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="article:published_time" content="2022-03-10T14:24:20.998Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:20.998Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file active"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-工作项目/Karaparty/歌词-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/">工作项目</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/">Karaparty</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">
+            <time datetime="2022-03-10T14:24:20.998Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            KaraParty歌词文档
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：：魏乔森"><a href="#作者：：魏乔森" class="headerlink" title="作者：：魏乔森"></a>作者：：魏乔森</h6><hr>
+<h3 id="一、歌词解析"><a href="#一、歌词解析" class="headerlink" title="一、歌词解析"></a>一、歌词解析</h3><h3 id="流程图："><a href="#流程图：" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<p>补充说明：歌词文件解析分为加密和非加密2种情况，最终结果都是将歌词文件解析成NSDictionary对象，将获得的NSDictionary对象解析成PhoneticLyricInfo（注音歌词对象）时包含歌词时间校验（如果是非纯文本歌词且歌词结束时间小于歌词开始时间，直接解析失败返回空歌词对象），抢唱歌词解析流程只是在普通歌词解析流程中多出了空位歌词解析逻辑</p>
+<h3 id="相关类："><a href="#相关类：" class="headerlink" title="相关类："></a>相关类：</h3><p>LyricInfo：歌词基类对象</p>
+<p>PhoneticLyricInfo：注音歌词对象，继承于LyricInfo</p>
+<p>KscLineInfo：单句歌词对象</p>
+<p>KscWordInfo：单个字对象（单个字是指包含注音的一个词组）</p>
+<p>KscPhoneticWordInfo：注音歌词对象</p>
+<h3 id="类结构图："><a href="#类结构图：" class="headerlink" title="类结构图："></a>类结构图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E8%A7%A3%E6%9E%90%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" class>
+
+<p>补充说明：类结构图只是表示一种包含关系，并不表示唯一包含</p>
+<h3 id="二、歌词展示"><a href="#二、歌词展示" class="headerlink" title="二、歌词展示"></a>二、歌词展示</h3><h3 id="流程图：-1"><a href="#流程图：-1" class="headerlink" title="流程图："></a>流程图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E6%98%BE%E7%A4%BA%E6%B5%81%E7%A8%8B%E5%9B%BE.png" class>
+
+<p>补充说明：歌词渲染开启异步线程目的是为了控制渲染频率，目前字歌词频率为每30000ul刷新一次，其余为每100000ul刷新一次</p>
+<h3 id="相关类：-1"><a href="#相关类：-1" class="headerlink" title="相关类："></a>相关类：</h3><p>CKScrollLyricsView：歌词展示控件</p>
+<p>CKLrcViewConfiguration：歌词配置信息类（包含歌词显示方式，如字歌词显示还是句歌词显示，歌词字体大小等参数）</p>
+<p>CKLrcChorusRecords：歌词合唱类型切换记录类</p>
+<p>LrcLabel：单行歌词展示控件（非注音歌词）</p>
+<p>CKLrcViewCell：句歌词展示cell（非注音歌词，内部包含LrcLabel）</p>
+<p>CKPhoneticLineView：注音歌词展示控件</p>
+<p>CKPhoneticLrcViewCell：字歌词展示cell（内部包含CKPhoneticLineView）</p>
+<p>CKChorusLrcViewCell：合唱句歌词展示cell</p>
+<p>CKPhoneticLrcChorusViewCell：合唱注音歌词展示cell</p>
+<p>CKLrcViewBaseCell：歌词展示cell基类</p>
+<h3 id="类结构图：-1"><a href="#类结构图：-1" class="headerlink" title="类结构图："></a>类结构图：</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/%E6%AD%8C%E8%AF%8D%E5%B1%95%E7%A4%BA%E7%B1%BB%E7%BB%93%E6%9E%84%E5%9B%BE.png" class>
+
+<p>补充说明：</p>
+<p>歌词渲染原理：</p>
+<p>非注音歌词：歌词显示cell内部有2个LrcLabel，有渲染颜色的LrcLabel在顶部，在未渲染的情况下，顶部的LrcLabel宽度为0，此时只显示底部的LrcLabel，所以呈现状态为未渲染状态，然后在渲染中根据时间算出应该渲染的进度，改变顶部LrcLabel的宽度，即看到歌词渲染进入效果，歌词滚动效果基于UICollectionView自带滚动效果</p>
+<p>注音歌词：渲染原理同非注音歌词，只是展示控件为CKPhoneticLineView，其内部显示是将注音词组分成多个CKPhoneticWordView控件拼接展示，CKPhoneticWordView并未暴露，在CKPhoneticLineView内部定义</p>
+<p>合唱歌词：歌词渲染逻辑上新增用户头像显示（根据合唱类型我唱，他唱，合唱分别显示我的头像，他的头像，我和他的头像）</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    测试一哈哈
+                
+            </div>
+        </a>
+    
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

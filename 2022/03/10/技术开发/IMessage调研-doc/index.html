@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>iMessage调研 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="iOS" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：魏乔森 前言：iMessage App：和IOS App一样是一个独立运行的项目，区别在于其上架的商店为iMessage AppStore（内置于系统的iMessage应用内），所以其开发流程和IOS App开发一样会有上架审核流程iMessage App上架相关配置参考 开发模式：有单独建立项目和在宿主App内新建iMessage Extension两种开发方式，两种开发方式共同点是审核流">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iMessage调研">
+<meta property="og:url" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：魏乔森 前言：iMessage App：和IOS App一样是一个独立运行的项目，区别在于其上架的商店为iMessage AppStore（内置于系统的iMessage应用内），所以其开发流程和IOS App开发一样会有上架审核流程iMessage App上架相关配置参考 开发模式：有单独建立项目和在宿主App内新建iMessage Extension两种开发方式，两种开发方式共同点是审核流">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-1.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-2.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-3.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-4.png">
+<meta property="article:published_time" content="2022-03-10T14:24:21.009Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.009Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-1.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file active"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-技术开发/IMessage调研-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/">技术开发</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">
+            <time datetime="2022-03-10T14:24:21.009Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            iMessage调研
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：魏乔森"><a href="#作者：魏乔森" class="headerlink" title="作者：魏乔森"></a>作者：魏乔森</h6><hr>
+<h3 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h3><h3 id="iMessage-App：和IOS-App一样是一个独立运行的项目，区别在于其上架的商店为iMessage-AppStore（内置于系统的iMessage应用内），所以其开发流程和IOS-App开发一样会有上架审核流程"><a href="#iMessage-App：和IOS-App一样是一个独立运行的项目，区别在于其上架的商店为iMessage-AppStore（内置于系统的iMessage应用内），所以其开发流程和IOS-App开发一样会有上架审核流程" class="headerlink" title="iMessage App：和IOS App一样是一个独立运行的项目，区别在于其上架的商店为iMessage AppStore（内置于系统的iMessage应用内），所以其开发流程和IOS App开发一样会有上架审核流程"></a>iMessage App：和IOS App一样是一个独立运行的项目，区别在于其上架的商店为iMessage AppStore（内置于系统的iMessage应用内），所以其开发流程和IOS App开发一样会有上架审核流程</h3><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/9d0621b0b302">iMessage App上架相关配置参考</a></p>
+<h3 id="开发模式：有单独建立项目和在宿主App内新建iMessage-Extension两种开发方式，两种开发方式共同点是审核流程一致，区别在于第一种方式上架后需要单独到iMessage-AppStore下载才能使用，后一种方式会跟随宿主App自动下载，基于此次调研目的主要是为了对宿主App做辅助推广，所以调研只针对后一种开发模式做文档描述"><a href="#开发模式：有单独建立项目和在宿主App内新建iMessage-Extension两种开发方式，两种开发方式共同点是审核流程一致，区别在于第一种方式上架后需要单独到iMessage-AppStore下载才能使用，后一种方式会跟随宿主App自动下载，基于此次调研目的主要是为了对宿主App做辅助推广，所以调研只针对后一种开发模式做文档描述" class="headerlink" title="开发模式：有单独建立项目和在宿主App内新建iMessage Extension两种开发方式，两种开发方式共同点是审核流程一致，区别在于第一种方式上架后需要单独到iMessage AppStore下载才能使用，后一种方式会跟随宿主App自动下载，基于此次调研目的主要是为了对宿主App做辅助推广，所以调研只针对后一种开发模式做文档描述"></a>开发模式：有单独建立项目和在宿主App内新建iMessage Extension两种开发方式，两种开发方式共同点是审核流程一致，区别在于第一种方式上架后需要单独到iMessage AppStore下载才能使用，后一种方式会跟随宿主App自动下载，基于此次调研目的主要是为了对宿主App做辅助推广，所以调研只针对后一种开发模式做文档描述</h3><h3 id="Demo地址：ios项目Party的Develop-iMessage分支（git地址：https-gitlab-haochang-tv-iOS-party-git）"><a href="#Demo地址：ios项目Party的Develop-iMessage分支（git地址：https-gitlab-haochang-tv-iOS-party-git）" class="headerlink" title="Demo地址：ios项目Party的Develop_iMessage分支（git地址：https://gitlab.haochang.tv/iOS/party.git）"></a>Demo地址：ios项目Party的Develop_iMessage分支（git地址：<a target="_blank" rel="noopener" href="https://gitlab.haochang.tv/iOS/party.git%EF%BC%89">https://gitlab.haochang.tv/iOS/party.git）</a></h3><h3 id="一、创建Extension"><a href="#一、创建Extension" class="headerlink" title="一、创建Extension"></a>一、创建Extension</h3><p>打开需要创建iMessage Extension的项目App-&gt;选中File-&gt;New-&gt;Target-&gt;iMessage Extension</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-1.png" class>
+
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-2.png" class>
+
+<p>创建好iMessage Extension后即可进行界面功能开发，示例中Extension命名为ChunKMessage，其结构如下：</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-3.png" class>
+
+<p>补充说明：Extension刚创建时无相关资源文件，只有一个MessagesViewController.swift类文件</p>
+<h3 id="二、消息发送："><a href="#二、消息发送：" class="headerlink" title="二、消息发送："></a>二、消息发送：</h3><h3 id="2-1-文本消息"><a href="#2-1-文本消息" class="headerlink" title="2.1 文本消息"></a>2.1 文本消息</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">activeConversation<span class="operator">?</span>.insertText(<span class="string">&quot;测试&quot;</span>, completionHandler: &#123; (error) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(error <span class="operator">??</span> <span class="string">&quot;error&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-2-图片消息"><a href="#2-2-图片消息" class="headerlink" title="2.2 图片消息"></a>2.2 图片消息</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要使用本地图片</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;image&quot;</span>, withExtension: <span class="string">&quot;jpeg&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">requestPresentationStyle(.compact)</span><br><span class="line">activeConversation<span class="operator">?</span>.insertAttachment(url, withAlternateFilename: <span class="literal">nil</span>, completionHandler: &#123; (error) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(error <span class="operator">??</span> <span class="string">&quot;error&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-音频消息"><a href="#2-3-音频消息" class="headerlink" title="2.3 音频消息"></a>2.3 音频消息</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要使用本地音频</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;audio&quot;</span>, withExtension: <span class="string">&quot;m4a&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">requestPresentationStyle(.compact)</span><br><span class="line">activeConversation<span class="operator">?</span>.insertAttachment(url, withAlternateFilename: <span class="literal">nil</span>, completionHandler: &#123; (error) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(error <span class="operator">??</span> <span class="string">&quot;error&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-视频消息"><a href="#2-4-视频消息" class="headerlink" title="2.4 视频消息"></a>2.4 视频消息</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要使用本地视频</span></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;video&quot;</span>, withExtension: <span class="string">&quot;mp4&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">requestPresentationStyle(.compact)</span><br><span class="line">activeConversation<span class="operator">?</span>.insertAttachment(url, withAlternateFilename: <span class="literal">nil</span>, completionHandler: &#123; (error) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(error <span class="operator">??</span> <span class="string">&quot;error&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-贴纸消息"><a href="#2-5-贴纸消息" class="headerlink" title="2.5 贴纸消息"></a>2.5 贴纸消息</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//需要使用本地图片</span></span><br><span class="line">requestPresentationStyle(.compact)</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> url <span class="operator">=</span> <span class="type">Bundle</span>.main.url(forResource: <span class="string">&quot;1&quot;</span>, withExtension: <span class="string">&quot;gif&quot;</span>) <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> localSticker:<span class="type">MSSticker</span>?</span><br><span class="line"><span class="keyword">do</span> &#123;</span><br><span class="line">    localSticker <span class="operator">=</span> <span class="keyword">try</span> <span class="type">MSSticker</span>(contentsOfFileURL: url, localizedDescription: <span class="string">&quot;localizedDescription&quot;</span>)</span><br><span class="line">&#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    localSticker <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> sticker <span class="operator">=</span> localSticker <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line">activeConversation<span class="operator">?</span>.insert(sticker, completionHandler: &#123; (error) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(error <span class="operator">??</span> <span class="string">&quot;error&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-发送自定义消息"><a href="#2-6-发送自定义消息" class="headerlink" title="2.6 发送自定义消息"></a>2.6 发送自定义消息</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">requestPresentationStyle(.compact)</span><br><span class="line"><span class="keyword">let</span> layout <span class="operator">=</span> <span class="type">MSMessageTemplateLayout</span>()</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">let</span> data <span class="operator">=</span> <span class="type">NSData</span>(contentsOf: <span class="type">URL</span>(string: <span class="string">&quot;https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fb1-q.mafengwo.net%2Fs7%2FM00%2F2E%2F37%2FwKgB6lSuHraAYMNtAAXF8ovILuk683.png&amp;refer=http%3A%2F%2Fb1-q.mafengwo.net&amp;app=2002&amp;size=f9999,10000&amp;q=a80&amp;n=0&amp;g=0n&amp;fmt=jpeg?sec=1628742982&amp;t=e19895ea719bc7207062eae6d07a42dc&quot;</span>) <span class="operator">??</span> <span class="type">URL</span>(fileURLWithPath: <span class="string">&quot;&quot;</span>)) &#123;</span><br><span class="line">    layout.image <span class="operator">=</span> <span class="type">UIImage</span>(data: data <span class="keyword">as</span> <span class="type">Data</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">layout.caption <span class="operator">=</span> <span class="string">&quot;测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本测试文本&quot;</span></span><br><span class="line"><span class="keyword">let</span> message <span class="operator">=</span> <span class="type">MSMessage</span>()</span><br><span class="line">message.layout <span class="operator">=</span> layout</span><br><span class="line"></span><br><span class="line">activeConversation<span class="operator">?</span>.insert(message, completionHandler: &#123; (error) <span class="keyword">in</span></span><br><span class="line">    <span class="built_in">print</span>(error <span class="operator">??</span> <span class="string">&quot;error&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>补充说明：iMessage App 有一个自带贴图展示的控件：MSStickerBrowserViewController，其用法类似iOS App的tableView，其遵循了MSStickerBrowserViewDataSource代理方法用于贴图内容展示，贴图点击后自动发送贴图消息 <a target="_blank" rel="noopener" href="https://www.jianshu.com/p/3ee614124d34">使用详情参考</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/ae11fb78ce2b">相关类说明参考</a></p>
+<h3 id="三、与宿主App数据共享"><a href="#三、与宿主App数据共享" class="headerlink" title="三、与宿主App数据共享"></a>三、与宿主App数据共享</h3><h3 id="3-1-本地数据"><a href="#3-1-本地数据" class="headerlink" title="3.1 本地数据"></a>3.1 本地数据</h3><p>App Group：由于Extension和宿主app分属2个不同的沙盒文件区域，所以需要借助苹果的App Group配置一个共同的沙盒访问区，所有需要共同访问的文件都需要存储到对应的公共沙盒访问区</p>
+<p>keychain：通过配置keychain-sharing来达到访问共同数据的目的</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a2d9ef58bad5">配置App Group参考</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0258bdae9a0c?utm_campaign=maleskine">配置keychain-sharing参考</a></p>
+<h3 id="3-2-Pod文件"><a href="#3-2-Pod文件" class="headerlink" title="3.2 Pod文件"></a>3.2 Pod文件</h3><p>在项目的<code>podfile</code>文件里面加入：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">link_with &#x27;宿主App的名字&#x27;, &#x27;拓展App的名字&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>然后执行 <code>pod update --no-repo-update</code> 。如果你是使用了<code>bundle</code>，执行 <code>bundle exec update --no-repo-update</code>这样就在宿主App和拓展App之间的建立了pod文件的连接，此种方式会将所有的pod库文件进行链接</p>
+<p>如果只需要链接部分库，可以这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">target &#x27;宿主App的名字&#x27; do</span><br><span class="line">        pod ...</span><br><span class="line">        pod ...</span><br><span class="line">        pod ...</span><br><span class="line">end</span><br><span class="line"></span><br><span class="line">target &#x27;拓展App的名字&#x27; do</span><br><span class="line">        pod ...</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-3-Assets-xcassets"><a href="#3-3-Assets-xcassets" class="headerlink" title="3.3 Assets.xcassets"></a>3.3 Assets.xcassets</h3><p>在<code>xcassets</code>里面直接勾选想要共享的<code>target</code>就可以了</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/guide-4.png" class>
+
+<h3 id="3-4-类文件"><a href="#3-4-类文件" class="headerlink" title="3.4 类文件"></a>3.4 类文件</h3><p>如果你需要共享的文件不是太多，那就直接把相关的类文件拷贝一份到<code>Extension</code>当中就可以了，如果共享文件比较多，或者想要更优雅的共享文件的方式，可以通过创建一个framework来引用公共的类文件（注意：宿主app中的相关引用需要删除，然后宿主app和extension分别引入framework）</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013749108/article/details/52771248">文件共享参考</a></p>
+<h3 id="四、跳转到宿主App"><a href="#四、跳转到宿主App" class="headerlink" title="四、跳转到宿主App"></a>四、跳转到宿主App</h3><p>消息点击跳转方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">didSelect</span>(<span class="keyword">_</span> <span class="params">message</span>: <span class="type">MSMessage</span>, <span class="params">conversation</span>: <span class="type">MSConversation</span>)</span> &#123;</span><br><span class="line"><span class="comment">//在第一次点击后后续点击无效</span></span><br><span class="line"><span class="built_in">print</span>(message.summaryText <span class="operator">??</span> <span class="string">&quot;&quot;</span>)</span><br><span class="line">extensionContext<span class="operator">?</span>.open(<span class="type">URL</span>(string: <span class="string">&quot;https://itunes.apple.com/cn/app/id1372619598?mt=8&quot;</span>) <span class="operator">??</span> <span class="type">URL</span>(fileURLWithPath: <span class="string">&quot;&quot;</span>), completionHandler: &#123; (success) <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">override</span> <span class="function"><span class="keyword">func</span> <span class="title">willBecomeActive</span>(<span class="params">with</span> <span class="params">conversation</span>: <span class="type">MSConversation</span>)</span> &#123;</span><br><span class="line"><span class="keyword">guard</span> <span class="keyword">let</span> message <span class="operator">=</span> conversation.selectedMessage <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;无消息&quot;</span>)</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">print</span>(message.summaryText <span class="operator">??</span> <span class="string">&quot;&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">//此处URL无论内容是什么都会跳转到宿主app内，所以可以在此处做跳转到指定界面的控制</span></span><br><span class="line">extensionContext<span class="operator">?</span>.open(<span class="type">URL</span>(string: <span class="string">&quot;https://itunes.apple.com/cn/app/id1372619598?mt=8&quot;</span>) <span class="operator">??</span> <span class="type">URL</span>(fileURLWithPath: <span class="string">&quot;&quot;</span>), completionHandler: &#123; (success) <span class="keyword">in</span></span><br><span class="line"></span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意：didSelect第一次点击是OK的，顺利的跳转到了宿主 App，然后回来再点击不是打开宿主 App，而是打开iMessage App。通过打断点发现毫无反应。这是因为当调转到宿主 App之后iMessage App就已经退出了，此时需要在willBecomeActive或didResignActive方法中做点击相关操作</p>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/2c7586dd02d6">消息点击参考</a></p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    PHPicker
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">IGListKit框架解析</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Swift 异步特性 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="iOS" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：熊甫荣 [toc] 异步函数 Swift has built-in support for writing asynchronous and parallel code in a structured way. … the term concurrency to refer to this common combination of asynchronous and parallel cod">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Swift 异步特性">
+<meta property="og:url" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：熊甫荣 [toc] 异步函数 Swift has built-in support for writing asynchronous and parallel code in a structured way. … the term concurrency to refer to this common combination of asynchronous and parallel cod">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/normalFuncCall.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/asyncFuncCall.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/task-serial.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/task-parallel.png">
+<meta property="article:published_time" content="2022-03-10T14:24:21.019Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.020Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/normalFuncCall.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file active"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-技术开发/Swift 异步特性-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/">技术开发</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">
+            <time datetime="2022-03-10T14:24:21.019Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Swift 异步特性
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：熊甫荣"><a href="#作者：熊甫荣" class="headerlink" title="作者：熊甫荣"></a>作者：熊甫荣</h6><hr>
+<p>[toc]</p>
+<h3 id="异步函数"><a href="#异步函数" class="headerlink" title="异步函数"></a>异步函数</h3><blockquote>
+<p>Swift has built-in support for writing asynchronous and parallel code in a structured way. … the term concurrency to refer to this common combination of asynchronous and parallel code.</p>
+</blockquote>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Swift官方文档是这样描述<strong>Swift并发</strong>的，它指的就是<strong>异步和并行代码的组合</strong>。并行编程需要解决的主要问题：</p>
+<ul>
+<li>如何确保不同运算运行步骤间的交互或是通信按照正确的顺序执行</li>
+<li>如何确保运算资源在不同运算之间被安全地共享和访问</li>
+</ul>
+<p>为了更容易和更优雅的解决上面两个问题，在<strong>Swift5.5</strong>中，引入了异步函数的概念。在函数声明的返回箭头前面，加上<code>async</code>关键字，就可以把一个函数声明为异步函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func loadSignature() async -&gt; String &#123;</span><br><span class="line">    fatalError(&quot;暂未实现&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>async</code>关键字会帮助编译器做两件事情：</p>
+<ul>
+<li>它允许我们在函数体内部使用<code>await</code>关键字；</li>
+<li>它要求其他人在调用这个函数时，使用<code>await</code>关键字。</li>
+</ul>
+<h4 id="代码举例"><a href="#代码举例" class="headerlink" title="代码举例"></a>代码举例</h4><p><strong>需求：</strong>从服务器拉取100000条天气数据，求取这些数据的平均值，然后将平均值回传给服务器。</p>
+<p><strong>分析：</strong>请求服务器的操作都是异步的毋庸置疑，由于数据量过大，求取平均值是个耗时操作，也应该异步处理。</p>
+<p><strong>常规代码实现：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">func fetchWeatherHistory(completion: @escaping ([Double]) -&gt; Void) &#123;</span><br><span class="line">    // 用随机值来取代网络请求返回的数据</span><br><span class="line">    DispatchQueue.global().async &#123;</span><br><span class="line">        let results = (1...100_000).map &#123; _ in Double.random(in: -10...30) &#125;</span><br><span class="line">        completion(results)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func calculateAverageTemperature(for records: [Double], completion: @escaping (Double) -&gt; Void) &#123;</span><br><span class="line">    // 先求和再计算平均值</span><br><span class="line">    DispatchQueue.global().async &#123;</span><br><span class="line">        let total = records.reduce(0, +)</span><br><span class="line">        let average = total / Double(records.count)</span><br><span class="line">        completion(average)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func upload(result: Double, completion: @escaping (String) -&gt; Void) &#123;</span><br><span class="line">    // 省略上传的网络请求代码，均返回&quot;OK&quot;</span><br><span class="line">    DispatchQueue.global().async &#123;</span><br><span class="line">        completion(&quot;OK&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">fetchWeatherHistory &#123; [weak self] records in</span><br><span class="line">    self?.calculateAverageTemperature(for: records) &#123; average in</span><br><span class="line">        self?.upload(result: average) &#123; response in</span><br><span class="line">            print(&quot;Server response: \(response)&quot;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>存在的问题：</p>
+<ul>
+<li>可能存在方法中多次调用或者忘记调用<code>completion</code>的情况;</li>
+<li>闭包参数<code>@escaping (String) -&gt; Void</code>难以阅读;</li>
+<li>层层嵌套的回调代码看起来很晦涩（所谓的回调地狱）;</li>
+<li>在swift5.0添加<code>Result</code>类型之前，使用<code>completion handlers</code>返回错误很困难;</li>
+</ul>
+<p><strong>async/await实现代码</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func fetchWeatherHistory() async -&gt; [Double] &#123;</span><br><span class="line">    (1...100_000).map &#123; _ in Double.random(in: -10...30) &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func calculateAverageTemperature(for records: [Double]) async -&gt; Double &#123;</span><br><span class="line">    let total = records.reduce(0, +)</span><br><span class="line">    let average = total / Double(records.count)</span><br><span class="line">    return average</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func upload(result: Double) async -&gt; String &#123;</span><br><span class="line">    &quot;OK&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用实现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">func processWeather() async &#123;</span><br><span class="line">    let records = await fetchWeatherHistory()</span><br><span class="line">    let average = await calculateAverageTemperature(for: records)</span><br><span class="line">    let response = await upload(result: average)</span><br><span class="line">    print(&quot;Server response: \(response)&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>仅仅通过<code>async</code>关键字将函数标记为异步返回值，在调用函数前加上<code>await</code>关键字，让整个调用过程变得简单清晰，就像在编写同步代码一样。</p>
+<h4 id="调用流程对比"><a href="#调用流程对比" class="headerlink" title="调用流程对比"></a>调用流程对比</h4><img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/normalFuncCall.png" class>
+
+<p><strong>普通函数的调用流程：(如上图)</strong></p>
+<ul>
+<li>调用函数;</li>
+<li>函数获取线程的控制权，并完全占有该线程;</li>
+<li>函数执行完成返回或者抛出错误，将控制权交还调用方;</li>
+</ul>
+<p>这里普通函数放弃线程控制权的唯一方式就是<strong>执行完成</strong>。</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/asyncFuncCall.png" class>
+
+<p><strong>异步函数的调用流程：（如上图）</strong></p>
+<ul>
+<li>调用函数;</li>
+<li>函数获得线程控制权;</li>
+<li>函数运行后，挂起，同时放弃对线程的控制，并将控制权交给系统，系统可自由支配该线程;</li>
+<li>系统确定何时恢复函数;</li>
+<li>函数恢复后重新获得控制权，并继续工作;</li>
+<li>函数执行完成或抛出异常后，返回调用方，将控制权交还给调用方;</li>
+</ul>
+<p>这里需要注意几点：</p>
+<ul>
+<li>一个异步函数挂起时，也会挂起它的调用者，所以调用者也必须是异步的;</li>
+<li>异步函数可以多次挂起;</li>
+<li>异步函数挂起时，不会阻塞线程;</li>
+<li>异步函数可能会在一个完全不同的线程上恢复;</li>
+<li>async 函数并不一定会挂起;</li>
+</ul>
+<h3 id="异步属性"><a href="#异步属性" class="headerlink" title="异步属性"></a>异步属性</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;在<strong>Swift5.5</strong>中，升级了只读属性，以单独或一起支持<code>async</code>和<code>throws</code>关键字，使它们更灵活。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">enum FileError: Error &#123;</span><br><span class="line">    case missing, unreadable</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">struct BundleFile &#123;</span><br><span class="line">    let filename: String</span><br><span class="line"></span><br><span class="line">    var contents: String &#123;</span><br><span class="line">        get async throws &#123;</span><br><span class="line">            guard let url = Bundle.main.url(forResource: filename, withExtension: nil) else &#123;</span><br><span class="line">                throw FileError.missing</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            do &#123;</span><br><span class="line">                return try String(contentsOf: url)</span><br><span class="line">            &#125; catch &#123;</span><br><span class="line">                throw FileError.unreadable</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>因为<code>contents</code>属性同时是<code>async</code>和<code>throws</code>，读取时必须使用<code>try await</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">func printHighScores() async throws &#123;</span><br><span class="line">    let file = BundleFile(filename: &quot;highscores&quot;)</span><br><span class="line">    try await print(file.contents)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意点：</p>
+<ul>
+<li>异步属性必须是只读的，可写属性不能声明为异步属性;</li>
+<li>异步属性需要有一个明确的<code>getter</code>，<code>async</code>关键字位于<code>get</code>后;</li>
+<li>从Swift 5.5 开始，<code>getter</code>也可以抛出异常，如果同时是异步的，则<code>async</code>关键字位于 <code>throws</code>前面;</li>
+<li><code>await</code>可用于属性body中的表达式，以表明操作的异步性;</li>
+</ul>
+<h3 id="结构化并发"><a href="#结构化并发" class="headerlink" title="结构化并发"></a>结构化并发</h3><p>对于同步函数来说，线程决定了它的执行环境。而对于异步函数，则由任务(Task)决定执行环境。Swift提供了一系列<code>Task</code>相关API来让开发者创建、组织、检查和取消任务。这些API围绕着<code>Task</code>这一核心类型，为每一组并发任务构建出一棵结构化的任务树：</p>
+<ul>
+<li>一个任务具有它自己的优先级和取消标识，它可以拥有若干个子任务并在其中执行异步函数。</li>
+<li>当一个父任务被取消时，这个父任务的取消标识将被设置，并向下传递到所有的子任务中去。</li>
+<li>无论是正常完成还是抛出错误，子任务会将结果向上报告给父任务，在所有子任务正常完成之前或者有子任务抛出之前，父任务是不会被完成的。</li>
+</ul>
+<p>这些特性看上去和<code>Operation</code>类有一些相似，不过<code>Task</code>直接利用异步函数的语法，可以用更简洁的方式进行表达。而<code>Operation</code>则需要依靠子类或者闭包。</p>
+<p>在调用异步函数时，需要在它前面添加<code>await</code>关键字；而另一方面，只有在异步函数中，我们才能使用 <code>await</code>关键字。那么问题在于，第一个异步函数执行的上下文，或者说任务树的根节点，是怎么来的？</p>
+<p>简单地使用<code>Task.init</code>就可以让我们获取一个任务执行的上下文环境，它接受一个<code>async</code>标记的闭包：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Task&lt;Success, Failure&gt; where Failure : Error &#123;</span><br><span class="line">    init(</span><br><span class="line">        priority: TaskPriority? = nil, </span><br><span class="line">        operation: @escaping @Sendable () async throws -&gt; Success</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>它继承当前任务上下文的优先级等特性，创建一个新的任务树根节点，我们可以在其中使用异步函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var results: [String] = []</span><br><span class="line"></span><br><span class="line">func someSyncMethod() &#123;</span><br><span class="line">    Task &#123;</span><br><span class="line">        try await processFromScratch()</span><br><span class="line">        print(&quot;Done: \(results)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func processFromScratch() async throws &#123;</span><br><span class="line">    let strings = await loadFromDatabase()</span><br><span class="line">    if let signature = try await loadSignature() &#123;</span><br><span class="line">        strings.forEach &#123;</span><br><span class="line">            results.append($0.appending(signature))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        //throw error</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>processFromScratch</code>中的处理依然是串行的：对<code>loadFromDatabase</code>的<code>await</code>将使这个异步函数在此暂停，直到实际操作结束，接下来才会执行<code>loadSignature</code>：</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/task-serial.png" class>
+
+<p>我们当然会希望这两个操作可以同时进行，同时，只有当两者都准备好后，才能调用<code>appending</code>来实际将签名附加到数据上。这需要任务以结构化的方式进行组织。使用<code>async let</code>绑定可以做到这一点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func processFromScratchNew() async throws &#123;//结构化并发</span><br><span class="line">    async let loadStrings = loadFromDatabase()</span><br><span class="line">    async let loadSignature = loadSignature()</span><br><span class="line">       </span><br><span class="line">    let strings = await loadStrings</span><br><span class="line">    if let signature = try await loadSignature &#123;</span><br><span class="line">        strings.forEach &#123;</span><br><span class="line">            results.append($0.appending(signature))</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        //throw error</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>async let</code>被称为异步绑定，它在当前<code>Task</code>上下文中创建新的子任务，并将它用作被绑定的异步函数的运行环境。和<code>Task.init</code>新建一个任务根节点不同，<code>async let</code>所创建的子任务是任务树上的叶子节点，它是结构化的。被异步绑定的操作会立即开始执行，即使在<code>await</code>之前执行就已经完成，其结果依然可以等到 <code>await</code>语句时再进行求值。在上面的例子中，<code>loadFromDatabase</code>和<code>loadSignature</code>将被并发执行。</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/task-parallel.png" class>
+
+<p>除了<code>async let</code>外，另一种创建结构化并发的方式，是使用任务组(Task group)。比如，我们希望在执行 <code>loadResultRemotely</code>的同时，让<code>processFromScratch</code>一起运行，可以将两个操作写在同一个<code>task group</code>中：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">func someSyncMethod() &#123;</span><br><span class="line">    Task &#123;</span><br><span class="line">        await withThrowingTaskGroup(of: Void.self) &#123; group in</span><br><span class="line">            group.async &#123;</span><br><span class="line">                try await self.loadResultRemotely()</span><br><span class="line">            &#125;</span><br><span class="line">            group.async &#123;</span><br><span class="line">                try await self.processFromScratch()</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;          </span><br><span class="line">        print(&quot;Done: \(results)&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="演员模型"><a href="#演员模型" class="headerlink" title="演员模型"></a>演员模型</h3><p>Swift5.5引入了actor，在概念上类似于在并发环境中可以安全使用的类，即需要确保在任何时间只能由单个线程访问actor内的可变状态。</p>
+<p>代码演示：创建一个<code>RiskyCollector</code>类，该类能够实现两个收集器对象之间交换牌组中的卡片。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class RiskyCollector &#123;</span><br><span class="line">    var deck: Set&lt;String&gt;</span><br><span class="line"></span><br><span class="line">    init(deck: Set&lt;String&gt;) &#123;</span><br><span class="line">        self.deck = deck</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func send(card selected: String, to person: RiskyCollector) -&gt; Bool &#123;</span><br><span class="line">        guard deck.contains(selected) else &#123; return false &#125;</span><br><span class="line"></span><br><span class="line">        deck.remove(selected)</span><br><span class="line">        person.transfer(card: selected)</span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func transfer(card: String) &#123;</span><br><span class="line">        deck.insert(card)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在单线程中，代码是安全的，但是在多线程中就不安全了，如果我们同时调用<code>send(card:to:)</code>多次，可能会发生以下事件链：</p>
+<ul>
+<li>第一个线程检查卡片是否在牌组中，并且是这样继续。  </li>
+<li>第二个线程还检查卡片是否在牌组中，并且是这样继续。  </li>
+<li>第一个线程从牌组中取出卡片并将其转移给另一个人。  </li>
+<li>第二个线程试图从牌组中取出这张牌，但实际上它已经消失了，所以什么也不会发生。但是，它仍然将卡转让给其他人。 </li>
+</ul>
+<p>在这种情况下，一个玩家失去1张牌，而另一个玩家得到2张牌，这显然是不合理的。<br>通过<code>actor</code>模型可以解决这个问题：除非异步执行，否则无法从Actor对象外部读取存储的属性和方法，并且根本无法从 Actor 对象外部写入存储的属性。异步行为不是为了性能；相反，这是因为Swift会自动将这些请求放入一个<strong>按顺序处理的队列</strong>中，以避免出现竞争条件。因此，我们可以将<code>RiskyCollector</code>类重写为<code>SafeCollector </code>actor,如下所示：  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">actor SafeCollector &#123;</span><br><span class="line">    var deck: Set&lt;String&gt;</span><br><span class="line"></span><br><span class="line">    init(deck: Set&lt;String&gt;) &#123;</span><br><span class="line">        self.deck = deck</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func send(card selected: String, to person: SafeCollector) async -&gt; Bool &#123;</span><br><span class="line">        guard deck.contains(selected) else &#123; return false &#125;</span><br><span class="line"></span><br><span class="line">        deck.remove(selected)</span><br><span class="line">        await person.transfer(card: selected)</span><br><span class="line">        return true</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    func transfer(card: String) &#123;</span><br><span class="line">        deck.insert(card)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>注意点：  </p>
+<ul>
+<li>Actor是使用<code>actor</code>关键字创建的。这是Swift中一种新的具体名义类型，用于连接结构体、类和枚举。</li>
+<li>该<code>send()</code>方法标有<code>async</code>，因为它需要在等待传输完成时暂停其工作。</li>
+<li>虽然该<code>transfer(card:)</code>方法没有用标记<code>async</code>，但我们仍然需要用<code>await</code>来调用它，因为它会等到另一个<code>SafeCollector</code> actor能够处理请求。</li>
+</ul>
+<p>需要明确的是，actor可以自由地、异步或以其他方式使用自己的属性和方法，但是当与不同的actor交互时，它必须始终异步完成。通过这些更改，Swift可以确保永远不会同时访问所有与actor隔离的状态，更重要的是，这是在编译时完成的，以保证安全。</p>
+<p>Actor和类的对比，相同点：</p>
+<ul>
+<li>两者都是引用类型，因此它们可用于共享状态。</li>
+<li>它们可以有方法、属性、初始值设定项和下标。</li>
+<li>它们可以符合协议并且是通用的。</li>
+<li>任何静态属性和方法在这两种类型中的行为都相同，因为它们没有<code>self</code>的概念，因此不会被隔离。</li>
+</ul>
+<p>区别：</p>
+<ul>
+<li>Actors 目前不支持继承。</li>
+<li>Actors 遵循新的<code>Actor</code>协议。</li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>Swift并发的概念很多，但是各种的模块边界是清晰的：</p>
+<ul>
+<li>异步函数：提供语法工具，使用更简洁和高效的方式，表达异步行为。</li>
+<li>结构化并发：提供并发的运行环境，负责高效的异步函数调度、取消和执行顺序。</li>
+<li>演员模型：提供封装良好的数据隔离，确保并发代码的安全。</li>
+</ul>
+<p>熟悉这些边界，有助于我们清晰地理解 Swift 并发各个部分的设计意图，从而让我们手中的工具可以被运用在正确的地方。</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    数据库(WCDB)应用
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">SiriKit 调研</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

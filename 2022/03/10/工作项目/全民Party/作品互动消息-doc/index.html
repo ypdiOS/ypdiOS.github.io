@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>作品互动消息 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="git" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：熊甫荣 本文档主要梳理全民Party中 作品点赞、评论以及合唱消息功能开发的主要逻辑，今后在开发类似功能时可参照此文档。主要功能包括消息构造、消息收发、消息监听、消息存储。 整体结构  相关类介绍作品消息核心类：    CKIMFeedLikeMessage: 作品点赞消息模型，CKIMMessage的子类;  CKIMFeedCommentMessage: 作品评论消息模型，CKIMMes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="作品互动消息">
+<meta property="og:url" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：熊甫荣 本文档主要梳理全民Party中 作品点赞、评论以及合唱消息功能开发的主要逻辑，今后在开发类似功能时可参照此文档。主要功能包括消息构造、消息收发、消息监听、消息存储。 整体结构  相关类介绍作品消息核心类：    CKIMFeedLikeMessage: 作品点赞消息模型，CKIMMessage的子类;  CKIMFeedCommentMessage: 作品评论消息模型，CKIMMes">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedMsgFlow.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedInteractCore.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedMsgDB.png">
+<meta property="article:published_time" content="2022-03-10T14:24:20.999Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.000Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedMsgFlow.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file active"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-工作项目/全民Party/作品互动消息-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/">工作项目</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/">全民Party</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/git/" rel="tag">git</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">
+            <time datetime="2022-03-10T14:24:20.999Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            作品互动消息
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：熊甫荣"><a href="#作者：熊甫荣" class="headerlink" title="作者：熊甫荣"></a>作者：熊甫荣</h6><hr>
+<p>本文档主要梳理<strong>全民Party</strong>中 作品点赞、评论以及合唱消息功能开发的主要逻辑，今后在开发类似功能时可参照此文档。主要功能包括消息构造、消息收发、消息监听、消息存储。</p>
+<h3 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedMsgFlow.png" class>
+
+<h3 id="相关类介绍"><a href="#相关类介绍" class="headerlink" title="相关类介绍"></a>相关类介绍</h3><p>作品消息核心类：</p>
+<img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedInteractCore.png" class>
+
+<ul>
+<li><p>CKIMFeedLikeMessage: 作品点赞消息模型，CKIMMessage的子类;</p>
+</li>
+<li><p>CKIMFeedCommentMessage: 作品评论消息模型，CKIMMessage的子类;</p>
+</li>
+<li><p>CKIMFeedChorusMessage: 作品合唱消息模型，CKIMMessage的子类;</p>
+</li>
+<li><p>CKFeedSendMessageManager: 作品消息发送管理类，通过CKIMSendMessageHelper来发送具体消息; </p>
+</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> 发送点赞消息</span><br><span class="line"></span><br><span class="line"> @param feedModel 作品</span><br><span class="line"> */</span><br><span class="line">+ (void)sendLikeMessageWithFeedModel:(CKFeedCardModel *)feedModel</span><br><span class="line">                          likeNotice:(NSInteger)likeNotice;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 发送评论消息</span><br><span class="line"></span><br><span class="line"> @param feedModel 作品</span><br><span class="line"> @param comment 发送的评论</span><br><span class="line"> @param reply 回复的评论</span><br><span class="line"> @param replySuper 顶级评论</span><br><span class="line"> @param feedNoticeSetModel 接收方是否开启通知</span><br><span class="line"> */</span><br><span class="line">+ (void)sendCommentMessageWithFeedModel:(CKFeedCardModel *)feedModel</span><br><span class="line">                                comment:(CKFeedCommentReplyModel *)comment</span><br><span class="line">                                  reply:(nullable CKFeedCommentReplyModel *)reply</span><br><span class="line">                             replySuper:(nullable CKFeedCommentReplyModel *)replySuper</span><br><span class="line">                     feedNoticeSetModel:(CKFeedNoticeSetModel *)feedNoticeSetModel;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 发送合唱消息</span><br><span class="line"> @param userId 原作品用户ID</span><br><span class="line"> @param originalId  原作品Id</span><br><span class="line"> @param chorusName 作品名称</span><br><span class="line"> @param chorusId 当前合唱作品ID</span><br><span class="line"> @param cover 作品首帧缩略图</span><br><span class="line"> */</span><br><span class="line">+ (void)sendChorusMessageToUserId:(NSString*)userId</span><br><span class="line">                       originalId:(NSString *)originalId</span><br><span class="line">                       chorusName:(NSString *)chorusName</span><br><span class="line">                         chorusId:(NSString *)chorusId</span><br><span class="line">                            cover:(NSString *)cover</span><br><span class="line">                     chorusNotice:(NSInteger)chorusNotice;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>CKIMSendMessageHelper: 消息发送工具类;</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> 发送作品点赞消息</span><br><span class="line"> </span><br><span class="line"> @param userid  接收消息的用户</span><br><span class="line"> @param buildMessageParmam 构建作品消息参数</span><br><span class="line"> @param needNotice  是否需要桌面通知</span><br><span class="line"> */</span><br><span class="line">+ (void)sendLikeMessageToUserID:(NSString *)userid</span><br><span class="line">             buildMessageParmam:(void(^)(CKIMFeedLikeMessage * message))buildMessageParmam</span><br><span class="line">                     needNotice:(BOOL)needNotice;</span><br><span class="line">                     </span><br><span class="line">/**</span><br><span class="line"> 发送评论消息</span><br><span class="line"> </span><br><span class="line"> @param userid 接收消息的用户</span><br><span class="line"> @param buildMessageParmam 构建评论消息参数</span><br><span class="line"> @param needNotice  是否需要桌面通知</span><br><span class="line"> */</span><br><span class="line">+ (void)sendCommentMessageToUserID:(NSString *)userid</span><br><span class="line">                buildMessageParmam:(void(^)(CKIMFeedCommentMessage * message))buildMessageParmam</span><br><span class="line">                        needNotice:(BOOL)needNotice;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 发送作品合唱消息</span><br><span class="line"> </span><br><span class="line"> @param userid  接收消息的用户</span><br><span class="line"> @param buildMessageParmam 构建作品消息参数</span><br><span class="line"> @param needNotice  是否需要桌面通知</span><br><span class="line"> */</span><br><span class="line">+ (void)sendChorusMessageToUserID:(NSString *)userid</span><br><span class="line">               buildMessageParmam:(void(^)(CKIMFeedChorusMessage * message))buildMessageParmam</span><br><span class="line">                       needNotice:(BOOL)needNotice;                                             </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>CKFeedDBManager: 本地作品相关消息存储管理类;</li>
+</ul>
+<p><strong>作品点赞</strong>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> 获取全部点赞</span><br><span class="line"> */</span><br><span class="line">+ (NSArray *)fetchAllLikes;</span><br><span class="line">+ (NSArray *)fetchLikesWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime;</span><br><span class="line">/**</span><br><span class="line"> 获取点赞</span><br><span class="line"> </span><br><span class="line"> @param uniquelyId 查询数据画最后一条的唯一标示</span><br><span class="line"> @param count 每页个数</span><br><span class="line"> @return &lt;#return value description#&gt;</span><br><span class="line"> */</span><br><span class="line">+ (NSArray *)fetchLikesWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime count:(NSInteger)count;</span><br><span class="line">/**</span><br><span class="line"> 所有点赞置为已读</span><br><span class="line">  */</span><br><span class="line">+ (BOOL)allRead4LikesByCreateTime:(nullable NSString *)createTime;</span><br><span class="line">///**</span><br><span class="line">// 点赞未读数</span><br><span class="line">// */</span><br><span class="line">+ (NSInteger)unreadCount4Likes;</span><br><span class="line">/**</span><br><span class="line"> 删除多余的点赞数据</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)delLikesDataUnnecessary;</span><br></pre></td></tr></table></figure>
+
+<p><strong>作品评论</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">+ (NSArray *)fetchAllComments;</span><br><span class="line">+ (NSArray *)fetchAllCommentsNeedTransform:(BOOL)needTransform;</span><br><span class="line">+ (NSArray *)fetchCommentsWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime;</span><br><span class="line">+ (NSArray *)fetchCommentsWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime needTransform:(BOOL)needTransform;</span><br><span class="line">+ (NSArray *)fetchCommentsWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime count:(NSInteger)count;</span><br><span class="line">/**</span><br><span class="line"> 获取评论</span><br><span class="line"> </span><br><span class="line"> @param uniquelyId 查询数据画最后一条的唯一标示</span><br><span class="line"> @param count 分页数据</span><br><span class="line"> @param needTransform 获取出的数据转化为自定义model</span><br><span class="line"> @return &lt;#return value description#&gt;</span><br><span class="line"> */</span><br><span class="line">+ (NSArray *)fetchCommentsWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime count:(NSInteger)count needTransform:(BOOL)needTransform;</span><br><span class="line">/**</span><br><span class="line"> 所有评论置为已读</span><br><span class="line">  */</span><br><span class="line">+ (BOOL)allRead4CommentsByCreateTime:(nullable NSString *)createTime;</span><br><span class="line">///**</span><br><span class="line">// 评论未读数</span><br><span class="line">// */</span><br><span class="line">+ (NSInteger)unreadCount4Comments;</span><br><span class="line">/**</span><br><span class="line"> 删除多余的评论数据</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)delCommentsDataUnnecessary;</span><br></pre></td></tr></table></figure>
+
+<p><strong>作品合唱</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> 获取全部合唱</span><br><span class="line"> */</span><br><span class="line">+ (NSArray *)fetchAllChorus;</span><br><span class="line">+ (NSArray *)fetchChorusWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime;</span><br><span class="line">/**</span><br><span class="line"> 获取合唱</span><br><span class="line"> </span><br><span class="line"> @param uniquelyId 查询数据画最后一条的唯一标示</span><br><span class="line"> @param count 每页个数</span><br><span class="line"> @return &lt;#return value description#&gt;</span><br><span class="line"> */</span><br><span class="line">+ (NSArray *)fetchChorusWithUniquelyId:(nullable NSString *)uniquelyId createTime:(nullable NSString *)createTime count:(NSInteger)count;</span><br><span class="line">/**</span><br><span class="line"> 所有合唱置为已读</span><br><span class="line">  */</span><br><span class="line">+ (BOOL)allRead4ChorusByCreateTime:(nullable NSString *)createTime;</span><br><span class="line">///**</span><br><span class="line">// 合唱未读数</span><br><span class="line">// */</span><br><span class="line">+ (NSInteger)unreadCount4Chorus;</span><br><span class="line">/**</span><br><span class="line"> 删除多余的合唱数据</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)delChorusDataUnnecessary;</span><br></pre></td></tr></table></figure>
+
+<p><strong>其它</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> 数据库更新</span><br><span class="line"> */</span><br><span class="line">+ (void)checkUpdate;</span><br><span class="line">/**</span><br><span class="line"> 插入一条数据</span><br><span class="line"> */</span><br><span class="line">+ (BOOL)insert:(id)message;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> 插入多条数据</span><br><span class="line"> */</span><br><span class="line">+ (void)insertArr:(NSArray *)messages;</span><br></pre></td></tr></table></figure>
+
+<p>在<strong>CKMainViewCtrl</strong>中监听点赞、评论、合唱消息：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">- (void)__bindRAC &#123;</span><br><span class="line">	@weakify(self)</span><br><span class="line">	...</span><br><span class="line">	//v2.3.0 --收到点赞和评论消息</span><br><span class="line">    [CKIMContextObserve(feedLikeMessage) subscribeNext:^(id x) &#123;</span><br><span class="line">        [CKFeedDBManager insert:x];</span><br><span class="line">    &#125;];</span><br><span class="line">    [CKIMContextObserve(feedCommentMessage) subscribeNext:^(id x) &#123;</span><br><span class="line">        [CKFeedDBManager insert:x];</span><br><span class="line">    &#125;];</span><br><span class="line">    //v2.8.0 --收到合唱消息</span><br><span class="line">    [CKIMContextObserve(feedChorusMessage) subscribeNext:^(id x) &#123;</span><br><span class="line">        [CKFeedDBManager insert:x];</span><br><span class="line">    &#125;];</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="数据库设计"><a href="#数据库设计" class="headerlink" title="数据库设计"></a>数据库设计</h3><img src="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/FeedMsgDB.png" class>
+
+<p>每个登陆用户(作品收到过点赞、评论、合唱)有一个数据库，数据库中存在1个用户信息表、1个作品点赞表、1个作品评论表、1个作品合唱表。</p>
+<table>
+<thead>
+<tr>
+<th align="left">含义</th>
+<th align="left">名称</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">数据库</td>
+<td align="left">feedlib</td>
+</tr>
+<tr>
+<td align="left">用户信息表</td>
+<td align="left">kCKFeedUserTable_</td>
+</tr>
+<tr>
+<td align="left">作品点赞表</td>
+<td align="left">kCKFeedLikeTable_@(userid)</td>
+</tr>
+<tr>
+<td align="left">作品评论表</td>
+<td align="left">kCKFeedCommentTable_@(userid)</td>
+</tr>
+<tr>
+<td align="left">作品合唱表</td>
+<td align="left">kCKFeedChorusTable_@(userid)</td>
+</tr>
+</tbody></table>
+<h4 id="表结构"><a href="#表结构" class="headerlink" title="表结构"></a>表结构</h4><p><strong>kCKFeedUserTable_</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">列名</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">userId</td>
+<td align="left">用户id(唯一)</td>
+</tr>
+<tr>
+<td align="left">user</td>
+<td align="left">用户基本信息json字符串</td>
+</tr>
+</tbody></table>
+<p><strong>kCKFeedLikeTable_@(userid)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">列名</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">messageId</td>
+<td align="left">消息id(唯一)</td>
+</tr>
+<tr>
+<td align="left">feedId</td>
+<td align="left">作品id</td>
+</tr>
+<tr>
+<td align="left">cover</td>
+<td align="left">作品封面图url</td>
+</tr>
+<tr>
+<td align="left">likeUserId</td>
+<td align="left">点赞用户id</td>
+</tr>
+<tr>
+<td align="left">likeUserName</td>
+<td align="left">点赞用户昵称</td>
+</tr>
+<tr>
+<td align="left">likeUserAvatar</td>
+<td align="left">点赞用户头像</td>
+</tr>
+<tr>
+<td align="left">createTime</td>
+<td align="left">点赞时间</td>
+</tr>
+<tr>
+<td align="left">isRead</td>
+<td align="left">是否已读</td>
+</tr>
+<tr>
+<td align="left">isVIP</td>
+<td align="left">是否vip</td>
+</tr>
+<tr>
+<td align="left">needShowVipFlag</td>
+<td align="left">是否显示vip标识</td>
+</tr>
+<tr>
+<td align="left">commentId</td>
+<td align="left">点赞评论id</td>
+</tr>
+</tbody></table>
+<p><strong>kCKFeedCommentTable_@(userid)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">列名</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">messageId</td>
+<td align="left">消息id(唯一)</td>
+</tr>
+<tr>
+<td align="left">feedId</td>
+<td align="left">作品id</td>
+</tr>
+<tr>
+<td align="left">cover</td>
+<td align="left">作品封面图url</td>
+</tr>
+<tr>
+<td align="left">sendToFeedUser</td>
+<td align="left">是否给作品作者发</td>
+</tr>
+<tr>
+<td align="left">commentUserId</td>
+<td align="left">评论用户id</td>
+</tr>
+<tr>
+<td align="left">commentUserName</td>
+<td align="left">评论用户昵称</td>
+</tr>
+<tr>
+<td align="left">commentUserAvatar</td>
+<td align="left">评论用户头像</td>
+</tr>
+<tr>
+<td align="left">commentId</td>
+<td align="left">评论id</td>
+</tr>
+<tr>
+<td align="left">commentContent</td>
+<td align="left">评论内容</td>
+</tr>
+<tr>
+<td align="left">replyUserId</td>
+<td align="left">回复评论用户id</td>
+</tr>
+<tr>
+<td align="left">replyUserName</td>
+<td align="left">回复评论用户昵称</td>
+</tr>
+<tr>
+<td align="left">replyUserAvatar</td>
+<td align="left">回复评论用户头像</td>
+</tr>
+<tr>
+<td align="left">replyCommentId</td>
+<td align="left">回复评论id</td>
+</tr>
+<tr>
+<td align="left">replyCommentContent</td>
+<td align="left">回复评论内容</td>
+</tr>
+<tr>
+<td align="left">createTime</td>
+<td align="left">评论时间</td>
+</tr>
+<tr>
+<td align="left">isRead</td>
+<td align="left">是否已读</td>
+</tr>
+<tr>
+<td align="left">isVIP</td>
+<td align="left">是否vip</td>
+</tr>
+<tr>
+<td align="left">needShowVipFlag</td>
+<td align="left">是否显示vip标识</td>
+</tr>
+</tbody></table>
+<p><strong>kCKFeedChorusTable_@(userid)</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">列名</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">messageId</td>
+<td align="left">消息id(唯一)</td>
+</tr>
+<tr>
+<td align="left">originalId</td>
+<td align="left">原作品id</td>
+</tr>
+<tr>
+<td align="left">cover</td>
+<td align="left">合唱作品封面</td>
+</tr>
+<tr>
+<td align="left">chorusId</td>
+<td align="left">合唱作品id</td>
+</tr>
+<tr>
+<td align="left">chorusName</td>
+<td align="left">合唱作品名称</td>
+</tr>
+<tr>
+<td align="left">chorusUserId</td>
+<td align="left">合唱用户id</td>
+</tr>
+<tr>
+<td align="left">chorusUserName</td>
+<td align="left">合唱用户昵称</td>
+</tr>
+<tr>
+<td align="left">chorusUserAvatar</td>
+<td align="left">合唱用户头像</td>
+</tr>
+<tr>
+<td align="left">createTime</td>
+<td align="left">合唱时间</td>
+</tr>
+<tr>
+<td align="left">isRead</td>
+<td align="left">是否已读</td>
+</tr>
+<tr>
+<td align="left">isVIP</td>
+<td align="left">是否vip</td>
+</tr>
+<tr>
+<td align="left">needShowVipFlag</td>
+<td align="left">是否显示vip标识</td>
+</tr>
+</tbody></table>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    作品录制文档
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">测试一哈哈</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

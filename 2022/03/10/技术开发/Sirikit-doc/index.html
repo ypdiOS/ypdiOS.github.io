@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>SiriKit 调研 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="iOS" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：熊甫荣 [toc] SiriKit简介iOS 10之后，Apple开放了SiriKit框架，用于通过Siri更加方便用户操作App相关功能。 用户向Siri发送语音指令，Siri将此指令解析为Intent对象，发送给相关联的App Extentsion。Extension根据Intent执行相关操作，完成用户指令。相关操作可以通过Intent UI Extentsion展示在Siri中。 S">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SiriKit 调研">
+<meta property="og:url" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：熊甫荣 [toc] SiriKit简介iOS 10之后，Apple开放了SiriKit框架，用于通过Siri更加方便用户操作App相关功能。 用户向Siri发送语音指令，Siri将此指令解析为Intent对象，发送给相关联的App Extentsion。Extension根据Intent执行相关操作，完成用户指令。相关操作可以通过Intent UI Extentsion展示在Siri中。 S">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/siri_workflow.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/siri_capability.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Siri_addExtension_1.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Siri_addExtension_2.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Siri_ConfigExtensionInfo.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Intent_lifecycle.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/IntentProcess.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/IntentUI.png">
+<meta property="article:published_time" content="2022-03-10T14:24:21.017Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.017Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/siri_workflow.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file active"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-技术开发/Sirikit-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/">技术开发</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">
+            <time datetime="2022-03-10T14:24:21.017Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            SiriKit 调研
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：熊甫荣"><a href="#作者：熊甫荣" class="headerlink" title="作者：熊甫荣"></a>作者：熊甫荣</h6><hr>
+<p>[toc]</p>
+<h3 id="SiriKit简介"><a href="#SiriKit简介" class="headerlink" title="SiriKit简介"></a>SiriKit简介</h3><p>iOS 10之后，Apple开放了SiriKit框架，用于通过Siri更加方便用户操作App相关功能。</p>
+<p>用户向Siri发送语音指令，Siri将此指令解析为Intent对象，发送给相关联的App Extentsion。Extension根据Intent执行相关操作，完成用户指令。相关操作可以通过Intent UI Extentsion展示在Siri中。</p>
+<p>Siri将可以解析并完成的Intent划分到不同的域（domain）中，包含以下几种：</p>
+<table>
+<thead>
+<tr>
+<th align="left">域（domain）</th>
+<th align="left">对应的意图（Intent）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">语音和视频通话 (VoIP calling)</td>
+<td align="left">INSearchCallHistoryIntent、INStartAudioCallIntent、INStartVideoCallIntent</td>
+</tr>
+<tr>
+<td align="left">发送消息 (Messaging)</td>
+<td align="left">INSendMessageIntent</td>
+</tr>
+<tr>
+<td align="left">收款或者付款 (Payments)</td>
+<td align="left">INSendPaymentIntent、INRequestPaymentIntent</td>
+</tr>
+<tr>
+<td align="left">列表和笔记 (Lists and Notes)</td>
+<td align="left">INCreateNoteIntent、INAppendToNoteIntent</td>
+</tr>
+<tr>
+<td align="left">视觉编码 (Visual Codes)</td>
+<td align="left">INGetVisualCodeIntent</td>
+</tr>
+<tr>
+<td align="left">图片搜索 (Photo search)</td>
+<td align="left">INSearchForPhotosIntent</td>
+</tr>
+<tr>
+<td align="left">管理锻炼 (Workouts)</td>
+<td align="left">INEndWorkoutIntent、INPauseWorkoutIntent 、INStartWorkoutIntent 、 INResumeWorkoutIntent 、INCancelWorkoutIntent</td>
+</tr>
+<tr>
+<td align="left">行程预约 (Ride booking)</td>
+<td align="left">INRequestRideIntent、INGetRideStatusIntent、 INListRideOptionsIntent、 INGetRideStatusIntent</td>
+</tr>
+<tr>
+<td align="left">车载管理 (Car Commands)</td>
+<td align="left">INGetCarLockStatusIntent、INSetCarLockStatusIntent、INActivateCarSignalIntent</td>
+</tr>
+<tr>
+<td align="left">车载系统 (CarPlay)</td>
+<td align="left">INSetAudioSourceInCarIntent、 INSetClimateSettingsInCarIntent、 INSetSeatSettingsInCarIntent、INSaveProfileInCarIntent、INSetProfileInCarIntent、INSetRadioStationIntent</td>
+</tr>
+<tr>
+<td align="left">餐厅订位 (Restaurant Reservations)</td>
+<td align="left">INBookRestaurantReservationIntent、 INGetAvailableRestaurantReservationBookingDefaultsIntent、 INGetAvailableRestaurantReservationBookingsIntent、 INGetRestaurantGuestIntent、 INGetUserCurrentRestaurantReservationBookingsIntent</td>
+</tr>
+</tbody></table>
+<h3 id="SiriKit工作流"><a href="#SiriKit工作流" class="headerlink" title="SiriKit工作流"></a>SiriKit工作流</h3><p>工作流如下图：</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/siri_workflow.png" class>
+
+<ul>
+<li>所有语音解析由Siri完成，Siri将解析后的用户指令封装为Intent对象发送给相应的App Extension程序；</li>
+<li>Intent UI Extension提供交互中展示在Siri中的UI界面，可以增强用户体验，为可选项；</li>
+<li>Siri完成语音识别和语义分析；</li>
+<li>根据你词汇中的关键词识别出你属于上述11种域（domain）中的哪一种；</li>
+<li>然后将结构化语音分析结果打包成一个某个域（Domain）的意图(Intent)；</li>
+<li>接着交给支持这个意图（Intent）的第三方App Extension，App Extension启动，从传入的Intent中获取相应的信息，完成操作。</li>
+</ul>
+<h3 id="SiriKit集成"><a href="#SiriKit集成" class="headerlink" title="SiriKit集成"></a>SiriKit集成</h3><p>1.开启Siri Capabilities。必须要有付费开发者账号，未付费开发者无此选项。  </p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/siri_capability.png" class>
+
+<p>2.请求Siri权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">- (void)checkSiriAuth &#123;</span><br><span class="line">    </span><br><span class="line">    [INPreferences requestSiriAuthorization:^(INSiriAuthorizationStatus status) &#123;</span><br><span class="line">        switch (status) &#123;</span><br><span class="line">            case INSiriAuthorizationStatusAuthorized:</span><br><span class="line">                NSLog(@&quot;Siri Authorized&quot;);</span><br><span class="line">                break;</span><br><span class="line">                </span><br><span class="line">            default:</span><br><span class="line">                NSLog(@&quot;Siri Not Authorized&quot;);</span><br><span class="line">                break;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.添加Intents Extension，Xcode会附带提示是否添加Intents UI Extentsion（可选）</p>
+<p>Xcode: File-&gt;New-&gt;Target… </p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Siri_addExtension_1.png" class>
+
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Siri_addExtension_2.png" class>
+
+<p>在添加的Extension的Info.plist文件中定义好需要支持的Intent</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Siri_ConfigExtensionInfo.png" class>
+
+
+<h3 id="SiriKit处理流程"><a href="#SiriKit处理流程" class="headerlink" title="SiriKit处理流程"></a>SiriKit处理流程</h3><p>下面以发消息<code>INSendMessageIntent</code>来说明：</p>
+<p>1)、一个标准的意图语音被Siri识别之后，SiriKit会先进入一个继承于<code>INExtension</code>的指定意图流程入口(<code>NSExtensionPrincipalClass</code>)类<code>IntentHandler.m</code>(默认类)</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/Intent_lifecycle.png" class>
+
+<table>
+<thead>
+<tr>
+<th align="left">方法列表</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">-resolveRecipientsForSendMessage:withCompletion:</td>
+<td align="left">解析发送消息语义，提取意图对象</td>
+</tr>
+<tr>
+<td align="left">- resolveContentForSendMessage:withCompletion:</td>
+<td align="left">解析发送消息内容方法</td>
+</tr>
+<tr>
+<td align="left">- confirmSendMessage:completion:</td>
+<td align="left">确认方法</td>
+</tr>
+<tr>
+<td align="left">- handleSendMessage:completion:</td>
+<td align="left">处理方法</td>
+</tr>
+</tbody></table>
+<p>2）、一个典型的Intent事件的处理过程中有这三个步骤<code>Resolve</code>、<code>Confirm</code>和<code>Handle</code>:</p>
+<p>1.<code>Resolve</code>阶段。在Siri获取到用户的语音输入之后，生成一个<code>INIntent</code>对象，将语音中的关键信息提取出来并且填充对应的属性。这个对象在稍后会传递给我们设置好的<code>INExtension</code>子类对象进行处理，根据子类遵循的不同协议来选择不同的解决方案。</p>
+<p>2.<code>Confirm</code>阶段。在上一个阶段通过<code>handlerForIntent:(INIntent *)</code>返回了处理<code>Intent</code>的对象，此阶段会依次调用<code>confirm</code>打头的实例方法来判断Siri填充的信息是否完成。匹配的判断结果包括Exactly one match、Two or more matches以及No match三种情况。这个过程中可以让Siri向用户征求更具体的参数信息。</p>
+<p>3.<code>Handle</code>阶段。在<code>confirm</code>方法执行完成之后，Siri进行最后的处理阶段，生成答复对象，并且向此<code>Intent</code>对象确认处理结果然后执显示结果给用户看。</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/IntentProcess.png" class>
+
+<p>3）、INSendMessageIntent 类介绍</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性名称</th>
+<th align="left">类型</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>recipients</code></td>
+<td align="left"><code>NSArray&lt;INPerson*&gt;</code></td>
+<td align="left">Contacts to whom the message should be sent.</td>
+</tr>
+<tr>
+<td align="left"><code>content</code></td>
+<td align="left"><code>NSString</code></td>
+<td align="left">Body text of the message.</td>
+</tr>
+<tr>
+<td align="left"><code>groupName</code></td>
+<td align="left"><code>NSString</code></td>
+<td align="left">Body text of the message.</td>
+</tr>
+<tr>
+<td align="left"><code>serviceName</code></td>
+<td align="left"><code>NSString</code></td>
+<td align="left">Specified service for the message.</td>
+</tr>
+<tr>
+<td align="left"><code>sender</code></td>
+<td align="left"><code>INPerson</code></td>
+<td align="left">The person, or account, sending the message.</td>
+</tr>
+</tbody></table>
+<p>通过流程方法里获取到<code>INSendMessageIntent</code>对象进行解析，匹配，处理，这个过程还涉及到返回的处理。每一个解析方法都需要得到一个<code>INIntentResolutionResult</code>类型的实例，用来保存校验结果。</p>
+<p>INIntentResolutionResult及其子类有不同的构造方法生成不同类型的结果，用来指定和Siri的交互。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><code>INIntentResolutionResult</code></th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>+ (instancetype)needsValue</code></td>
+<td align="left">需要一个值，Siri会提示用户给一个值</td>
+</tr>
+<tr>
+<td align="left"><code>+ (instancetype)notRequired</code></td>
+<td align="left">不是必要的，是否给值都会过这个resolve</td>
+</tr>
+<tr>
+<td align="left"><code>+ (instancetype)unsupported</code></td>
+<td align="left">不支持的，Siri会提示用户这个值不被支持</td>
+</tr>
+<tr>
+<td align="left"><code>+ (instancetype)successWithResolvedValue:(BOOL)resolvedValue</code></td>
+<td align="left">成功解析</td>
+</tr>
+</tbody></table>
+<p>4)、根据流程方法处理之后，如何与主程序通信</p>
+<p>轻量级通信可采用这个办法：<br>1）、在handling阶段在<code>NSUserActivity</code>存储相应的信息，字典或字符串都行（如上handling阶段代码）。<br>2）、在<code>AppDelegate</code>，获取<code>NSUserActivity</code>所存储的信息。<br>3）、发送通知给所需要的地方。<br>4）、接收到通知后对主程序进行相应操作。  </p>
+<p>有关在AppDelegate中处理SiriKit的Intent可以参考<a target="_blank" rel="noopener" href="https://developer.apple.com/documentation/uikit/uiapplicationdelegate/1623072-application?language=objc">苹果官方文档</a>  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//AppDelegate.m</span><br><span class="line">- (BOOL)application:(UIApplication *)application willFinishLaunchingWithOptions:(NSDictionary *)launchOptions &#123;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (BOOL)application:(UIApplication *)application</span><br><span class="line">   continueUserActivity:(NSUserActivity *)userActivity</span><br><span class="line">restorationHandler:(void (^)(NSArray *restorableObjects))restorationHandler &#123;</span><br><span class="line">    if ([userActivity.interaction.intent isKindOfClass:[INSendMessageIntent class]]) &#123;</span><br><span class="line">        INSendMessageIntent *intent = (INSendMessageIntent *)(userActivity.interaction.intent);</span><br><span class="line">        NSLog(@&quot;%@&quot;,[[intent.recipients lastObject] displayName]);</span><br><span class="line">    &#125;</span><br><span class="line">    return YES;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Intent-UI-Extension"><a href="#Intent-UI-Extension" class="headerlink" title="Intent UI Extension"></a>Intent UI Extension</h3><p>运用<code>SiriKit</code>开发相关功能，UI是依赖于<code>Intent UI Extension</code>，<code>SiriKit</code>并不能从系统层面调用App内部UI，只能调用打开App和<code>SirKit</code>自定义UI。</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/IntentUI.png" class>
+
+<p>系统创建了<code>ViewController</code>，加载视图，调用<code>viewDidLoad</code>方法并且调用了<code>INUIHostedViewControlling</code>协议的<code>configureWithInteraction:context:completion:</code>方法，传递了一个交互对象，用于配置界面。 当配置完成后，<code>ViewController</code>就会展示在Siri或者Maps应用界面的空白部分。这时会调用<code>viewWillAppear/viewDidAppear</code>方法。<br>当视图消失时，也会调用生命周期的<code>viewWillDisappear/viewDidDisappear</code>方法。</p>
+<p>关于控制器的使用，苹果给出了几点注意事项：</p>
+<ul>
+<li>切换子控制器来展示不同类型的内容。 你的Intents UI扩展只有一个主视图控制器，如果你想为不同的Intents展示不同的内容，你需要使用不同的视图。可以在<code>configureWithInteraction:context:completion:</code>这个方法里面，根据提供的<code>intentObject</code>来创建不同的子视图。</li>
+<li>在你的视图控制器可用的期间，动态调整内容。 在<code>viewDidAppear:</code>方法里面才开始启动动画，在<code>viewWillDisappear:</code>方法里面要结束动画。</li>
+<li>尽快的配置好你的视图控制器，这样Siri才能更快的展示它。 你的视图控制器也许不会在屏幕上停留太久，所以尽量利用本地资源以及提供的<code>INInteraction</code>对象来配置你的设置。如果你需要从服务器拉取更多的信息，请异步完成，并在稍后再更新你的界面。</li>
+<li>请不要在界面里面展示广告。你可以展示你自己的品牌信息，但是你不能够加入其它广告。</li>
+</ul>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Swift 异步特性
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Settings.Bundle</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>

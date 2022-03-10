@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <meta charset="utf-8">
+    
+    <title>数据库(WCDB)应用 | Coder在嘉陵江边</title>
+    
+    
+        <meta name="keywords" content="iOS" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="作者：陈果 [toc] 1.简介WCDB（wechat dataBase）是一个高效、完整、易用的开源移动数据库框架，基于SQLite 和 SQLCipher ，支持iOS， macOS和Android。 性能：       2.模型绑定 WCDB 基于 Swift 4.0 的 Codable 协议实现模型绑定的过程。  12345678910111213141516171819202122232">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库(WCDB)应用">
+<meta property="og:url" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/index.html">
+<meta property="og:site_name" content="Coder在嘉陵江边">
+<meta property="og:description" content="作者：陈果 [toc] 1.简介WCDB（wechat dataBase）是一个高效、完整、易用的开源移动数据库框架，基于SQLite 和 SQLCipher ，支持iOS， macOS和Android。 性能：       2.模型绑定 WCDB 基于 Swift 4.0 的 Codable 协议实现模型绑定的过程。  12345678910111213141516171819202122232">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-0.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-1.png">
+<meta property="og:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-2.png">
+<meta property="article:published_time" content="2022-03-10T14:24:21.020Z">
+<meta property="article:modified_time" content="2022-03-10T14:24:21.020Z">
+<meta property="article:author" content="ypdiOS">
+<meta property="article:tag" content="iOS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-0.png">
+    
+
+    
+
+    
+        <link rel="icon" href="/favicon.ico" />
+    
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/libs/open-sans/styles.css">
+
+    
+<link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+
+    
+<script src="/libs/jquery/plugins/cookie/1.4.1/jquery.cookie.js"></script>
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+
+    
+    
+        
+<link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+
+    
+    
+    
+    
+
+
+    
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Coder在嘉陵江边</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/">首页</a>
+                
+                    <a class="main-nav-link" href="/archives">归档</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
+
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/">首页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap" id='categories'>
+        <h3 class="widget-title">
+            <span>categories</span>
+            &nbsp;
+            <a id='allExpand' href="#">
+                <i class="fa fa-angle-double-up fa-2x"></i>
+            </a>
+        </h3>
+        
+        
+        
+         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            基础规范
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/Swift%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  <li class="file"><a href="/2022/03/10/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83/%E5%9F%BA%E7%A1%80%E8%A7%84%E8%8C%83-doc/">测试一哈哈</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            工作项目
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;"> 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            Karaparty
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/Karaparty/%E6%AD%8C%E8%AF%8D-doc/">KaraParty歌词文档</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            全民Party
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E4%BA%92%E5%8A%A8%E6%B6%88%E6%81%AF-doc/">作品互动消息</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E4%BD%9C%E5%93%81%E5%BD%95%E5%88%B6-doc/">作品录制文档</a></li>  <li class="file"><a href="/2022/03/10/%E5%B7%A5%E4%BD%9C%E9%A1%B9%E7%9B%AE/%E5%85%A8%E6%B0%91Party/%E6%AD%8C%E8%AF%8D-doc/">全民Party歌词文档</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory open">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            技术开发
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IGListKit-doc/">IGListKit框架解析</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/IMessage%E8%B0%83%E7%A0%94-doc/">iMessage调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/PHPicker/">PHPicker</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/SettingsBundle-doc/">Settings.Bundle</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Sirikit-doc/">SiriKit 调研</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/">Swift 异步特性</a></li>  <li class="file active"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">数据库(WCDB)应用</a></li>  <li class="file"><a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/">画中画</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder-open"></i>
+                            &nbsp;
+                            生活学习
+                        </a>
+                         <ul class="unstyled" id="tree" style="display: block;">  <li class="file"><a href="/2022/03/10/%E7%94%9F%E6%B4%BB%E5%AD%A6%E4%B9%A0/%E5%85%89%E8%BE%89%E5%B2%81%E6%9C%88/">光辉岁月</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+    </div>
+    <script>
+        $(document).ready(function() {
+            var iconFolderOpenClass  = 'fa-folder-open';
+            var iconFolderCloseClass = 'fa-folder';
+            var iconAllExpandClass = 'fa-angle-double-down';
+            var iconAllPackClass = 'fa-angle-double-up';
+            // Handle directory-tree expansion:
+            // 左键单独展开目录
+            $(document).on('click', '#categories a[data-role="directory"]', function (event) {
+                event.preventDefault();
+
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var subtree = $(this).siblings('ul');
+                icon.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if (expanded) {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideUp({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderCloseClass);
+                } else {
+                    if (typeof subtree != 'undefined') {
+                        subtree.slideDown({ duration: 100 });
+                    }
+                    icon.addClass(iconFolderOpenClass);
+                }
+            });
+            // 右键展开下属所有目录
+            $('#categories a[data-role="directory"]').bind("contextmenu", function(event){
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconFolderOpenClass);
+                var listNode = $(this).siblings('ul');
+                var subtrees = $.merge(listNode.find('li ul'), listNode);
+                var icons = $.merge(listNode.find('.fa'), icon);
+                icons.removeClass(iconFolderOpenClass).removeClass(iconFolderCloseClass);
+                if(expanded) {
+                    subtrees.slideUp({ duration: 100 });
+                    icons.addClass(iconFolderCloseClass);
+                } else {
+                    subtrees.slideDown({ duration: 100 });
+                    icons.addClass(iconFolderOpenClass);
+                }
+            })
+            // 展开关闭所有目录按钮
+            $(document).on('click', '#allExpand', function (event) {
+                event.preventDefault();
+                
+                var icon = $(this).children('.fa');
+                var expanded = icon.hasClass(iconAllExpandClass);
+                icon.removeClass(iconAllExpandClass).removeClass(iconAllPackClass);
+                if(expanded) {
+                    $('#sidebar .fa.fa-folder').removeClass('fa-folder').addClass('fa-folder-open')
+                    $('#categories li ul').slideDown({ duration: 100 });
+                    icon.addClass(iconAllPackClass);
+                } else {
+                    $('#sidebar .fa.fa-folder-open').removeClass('fa-folder-open').addClass('fa-folder')
+                    $('#categories li ul').slideUp({ duration: 100 });
+                    icon.addClass(iconAllExpandClass);
+                }
+            });  
+        });
+    </script>
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+            <section id="main"><article id="post-技术开发/WCDB-doc" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/">技术开发</a>
+    </div>
+
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link-link" href="/tags/iOS/" rel="tag">iOS</a>
+    </div>
+
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/">
+            <time datetime="2022-03-10T14:24:21.020Z" itemprop="datePublished">2022-03-10</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                    </div>
+                
+                
+    
+        <h1 class="article-title" itemprop="name">
+            数据库(WCDB)应用
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+        
+        
+            <h6 id="作者：陈果"><a href="#作者：陈果" class="headerlink" title="作者：陈果"></a>作者：陈果</h6><hr>
+<p>[toc]</p>
+<h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><p>WCDB（wechat dataBase）是一个高效、完整、易用的开源移动数据库框架，基于SQLite 和 SQLCipher ，支持iOS， macOS和Android。</p>
+<p>性能：</p>
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-0.png" class>
+
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-1.png" class>
+
+<img src="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/WCDB-doc/WCDB-2.png" class>
+
+<h3 id="2-模型绑定"><a href="#2-模型绑定" class="headerlink" title="2.模型绑定"></a>2.模型绑定</h3><ul>
+<li><code>WCDB</code> 基于 <code>Swift 4.0</code> 的 <code>Codable</code> 协议实现模型绑定的过程。</li>
+</ul>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/// 学生表</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>: <span class="title">TableCodable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> identifier: <span class="type">Int</span>? <span class="operator">=</span> <span class="literal">nil</span> <span class="comment">//主键</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span> <span class="comment">//名称</span></span><br><span class="line">    <span class="keyword">var</span> age: <span class="type">Int</span>?  <span class="comment">//年级</span></span><br><span class="line">    <span class="keyword">var</span> sex: <span class="type">Int</span>? <span class="operator">=</span> <span class="number">0</span> <span class="comment">//性别</span></span><br><span class="line">    <span class="keyword">var</span> teacherId: <span class="type">String</span>? <span class="comment">//外键，老师的id（表示一个老师可以对应多个学生）</span></span><br><span class="line">    <span class="comment">/// 主键需要自增长时需要isAutoIncrement设成true，这样就可以实现主键自增长，不用手动赋值</span></span><br><span class="line">    <span class="keyword">var</span> isAutoIncrement: <span class="type">Bool</span> &#123;</span><br><span class="line">        <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/// 需要实现CodingKeys枚举，枚举与字段需一一对应</span></span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">CodingKeys</span>: <span class="title">String</span>, <span class="title">CodingTableKey</span> </span>&#123;</span><br><span class="line">        <span class="keyword">typealias</span> <span class="type">Root</span> <span class="operator">=</span> <span class="type">Student</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">let</span> objectRelationalMapping <span class="operator">=</span> <span class="type">TableBinding</span>(<span class="type">CodingKeys</span>.<span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">case</span> identifier <span class="operator">=</span> <span class="string">&quot;id&quot;</span> <span class="comment">//表示改字段在数据库表中是id，如和数据库表中保持一致就可以不赋值</span></span><br><span class="line">        <span class="keyword">case</span> name</span><br><span class="line">        <span class="keyword">case</span> age</span><br><span class="line">        <span class="keyword">case</span> sex</span><br><span class="line">        <span class="keyword">case</span> teacherId</span><br><span class="line">        </span><br><span class="line">       <span class="comment">/// 对应字段的是否主键，是否可空，是否自增长，是否唯一标识等约束控制</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">var</span> columnConstraintBindings: [<span class="type">Student</span>.<span class="type">CodingKeys</span> : <span class="type">ColumnConstraintBinding</span>]<span class="operator">?</span> &#123;</span><br><span class="line">            [identifier: <span class="type">ColumnConstraintBinding</span>(isPrimary: <span class="literal">true</span>, isNotNull: <span class="literal">true</span>),</span><br><span class="line">             sex: <span class="type">ColumnConstraintBinding</span>(isNotNull: <span class="literal">true</span>, defaultTo: <span class="number">0</span>)]</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">/// 对应字段的外键</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">var</span> tableConstraintBindings: [<span class="type">String</span> : <span class="type">TableConstraintBinding</span>]<span class="operator">?</span> &#123;</span><br><span class="line">            <span class="keyword">let</span> forkey <span class="operator">=</span> <span class="type">ForeignKeyBinding</span>(teacherId, foreignKey: <span class="type">ForeignKey</span>(withForeignTable: <span class="string">&quot;Teacher&quot;</span>, and: [<span class="type">Teacher</span>.<span class="type">CodingKeys</span>.identifier]))</span><br><span class="line">            <span class="keyword">return</span> [<span class="string">&quot;ForkeyConstraint&quot;</span>: forkey]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>: <span class="title">TableCodable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> identifier: <span class="type">Int</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">var</span> name: <span class="type">String</span>? <span class="operator">=</span> <span class="literal">nil</span></span><br><span class="line">    <span class="keyword">var</span> age: <span class="type">Int</span>?</span><br><span class="line">    <span class="keyword">var</span> sex: <span class="type">Int</span>? <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">enum</span> <span class="title">CodingKeys</span>: <span class="title">String</span>, <span class="title">CodingTableKey</span> </span>&#123;</span><br><span class="line">        <span class="keyword">typealias</span> <span class="type">Root</span> <span class="operator">=</span> <span class="type">Teacher</span></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">let</span> objectRelationalMapping <span class="operator">=</span> <span class="type">TableBinding</span>(<span class="type">CodingKeys</span>.<span class="keyword">self</span>)</span><br><span class="line">        <span class="keyword">case</span> identifier</span><br><span class="line">        <span class="keyword">case</span> name</span><br><span class="line">        <span class="keyword">case</span> age</span><br><span class="line">        <span class="keyword">case</span> sex</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">var</span> columnConstraintBindings: [<span class="type">Teacher</span>.<span class="type">CodingKeys</span> : <span class="type">ColumnConstraintBinding</span>]<span class="operator">?</span> &#123;</span><br><span class="line">            [identifier: <span class="type">ColumnConstraintBinding</span>(isPrimary: <span class="literal">true</span>, isNotNull: <span class="literal">true</span>),</span><br><span class="line">             sex: <span class="type">ColumnConstraintBinding</span>(isNotNull: <span class="literal">true</span>, defaultTo: <span class="number">1</span>)]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-创建数据库"><a href="#3-创建数据库" class="headerlink" title="3.创建数据库"></a>3.创建数据库</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> path <span class="operator">=</span> <span class="string">&quot;<span class="subst">\(NSHomeDirectory())</span>/tmp/school.db&quot;</span></span><br><span class="line"><span class="comment">//创建数据库</span></span><br><span class="line"><span class="keyword">let</span> db <span class="operator">=</span> <span class="type">Database</span>(withPath: path)</span><br><span class="line"><span class="comment">//设置标签，可以通过标签获取到数据库</span></span><br><span class="line">db.tag <span class="operator">=</span> <span class="number">1</span></span><br><span class="line"><span class="comment">//        let tempDB = Database(withExistingTag: 1)//设置了标签后，可以通过tag获取数据库</span></span><br><span class="line"><span class="comment">//数据库加密</span></span><br><span class="line">db.setCipher(key: <span class="string">&quot;123456&quot;</span>.data(using: .utf8))</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-创建表"><a href="#4-创建表" class="headerlink" title="4.创建表"></a>4.创建表</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建表</span></span><br><span class="line"><span class="keyword">try?</span> db.create(table: <span class="string">&quot;Student&quot;</span>, of: <span class="type">Student</span>.<span class="keyword">self</span>)</span><br><span class="line"><span class="keyword">try?</span> db.create(table: <span class="string">&quot;Teacher&quot;</span>, of: <span class="type">Teacher</span>.<span class="keyword">self</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="5-插入数据"><a href="#5-插入数据" class="headerlink" title="5.插入数据"></a>5.插入数据</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">let</span> aTeacher <span class="operator">=</span> <span class="type">Teacher</span>()</span><br><span class="line">aTeacher.identifier <span class="operator">=</span> <span class="number">123</span></span><br><span class="line">aTeacher.age <span class="operator">=</span> <span class="number">25</span></span><br><span class="line">aTeacher.name <span class="operator">=</span> <span class="string">&quot;teacher&quot;</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">let</span> aStudent <span class="operator">=</span> <span class="type">Student</span>()</span><br><span class="line">aStudent.identifier <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">aStudent.name <span class="operator">=</span> <span class="string">&quot;a&quot;</span></span><br><span class="line">aStudent.age <span class="operator">=</span> <span class="number">5</span></span><br><span class="line">aStudent.sex <span class="operator">=</span> <span class="number">0</span></span><br><span class="line">aStudent.teacherId <span class="operator">=</span> aTeacher.identifier</span><br><span class="line">        </span><br><span class="line"><span class="keyword">let</span> bStudent <span class="operator">=</span> <span class="type">Student</span>()</span><br><span class="line">bStudent.identifier <span class="operator">=</span> <span class="number">2</span></span><br><span class="line">bStudent.name <span class="operator">=</span> <span class="string">&quot;b&quot;</span></span><br><span class="line">bStudent.age <span class="operator">=</span> <span class="number">6</span></span><br><span class="line">bStudent.sex <span class="operator">=</span> <span class="number">1</span></span><br><span class="line">bStudent.teacherId <span class="operator">=</span> aTeacher.identifier</span><br><span class="line">        </span><br><span class="line"><span class="keyword">let</span> cStudent <span class="operator">=</span> <span class="type">Student</span>()</span><br><span class="line">cStudent.identifier <span class="operator">=</span> <span class="number">3</span></span><br><span class="line">cStudent.name <span class="operator">=</span> <span class="string">&quot;c&quot;</span></span><br><span class="line">cStudent.age <span class="operator">=</span> <span class="number">5</span></span><br><span class="line">cStudent.teacherId <span class="operator">=</span> aTeacher.identifier</span><br><span class="line"></span><br><span class="line"><span class="comment">/// 事务插入</span></span><br><span class="line"><span class="keyword">try?</span> db.run(transaction: &#123;</span><br><span class="line">    <span class="keyword">try?</span> db.insert(objects: [aTeacher], intoTable: <span class="string">&quot;Teacher&quot;</span>)</span><br><span class="line">    <span class="keyword">try?</span> db.insert(objects: [aStudent], intoTable: <span class="string">&quot;Student&quot;</span>)</span><br><span class="line">    <span class="keyword">try?</span> db.insert(objects: [bStudent], intoTable: <span class="string">&quot;Student&quot;</span>)</span><br><span class="line">    <span class="keyword">try?</span> db.insert(objects: [cStudent], intoTable: <span class="string">&quot;Student&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="6-删除数据"><a href="#6-删除数据" class="headerlink" title="6.删除数据"></a>6.删除数据</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 事务删除</span></span><br><span class="line"><span class="keyword">try?</span> db.run(transaction: &#123;</span><br><span class="line">    <span class="comment">// 删除指定identifier数据</span></span><br><span class="line">    <span class="keyword">try?</span> db.delete(fromTable: <span class="string">&quot;Student&quot;</span>, where: <span class="type">Student</span>.<span class="type">CodingKeys</span>.identifier <span class="operator">==</span> <span class="number">3</span>)</span><br><span class="line">    <span class="comment">// 清空表</span></span><br><span class="line">    <span class="keyword">try?</span> db.delete(fromTable: <span class="string">&quot;Teacher&quot;</span>)</span><br><span class="line">    <span class="keyword">try?</span> db.delete(fromTable: <span class="string">&quot;Student&quot;</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="7-更新数据"><a href="#7-更新数据" class="headerlink" title="7.更新数据"></a>7.更新数据</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 事务更新</span></span><br><span class="line"><span class="keyword">try?</span> db.run(transaction: &#123;</span><br><span class="line">    <span class="keyword">let</span> dStudent <span class="operator">=</span> <span class="type">Student</span>()</span><br><span class="line">    dStudent.name <span class="operator">=</span> <span class="string">&quot;d&quot;</span></span><br><span class="line">    <span class="keyword">try?</span> db.update(table: <span class="string">&quot;Student&quot;</span>, on: [<span class="type">Student</span>.<span class="type">CodingKeys</span>.name], with: dStudent, where: <span class="type">Student</span>.<span class="type">CodingKeys</span>.identifier <span class="operator">==</span> <span class="number">3</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="8-查询数据"><a href="#8-查询数据" class="headerlink" title="8.查询数据"></a>8.查询数据</h3><figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 单表查询</span></span><br><span class="line"><span class="keyword">let</span> sTable <span class="operator">=</span> <span class="keyword">try!</span> db.getTable(named: <span class="string">&quot;Student&quot;</span>, of: <span class="type">Student</span>.<span class="keyword">self</span>) <span class="comment">// 获取一个表</span></span><br><span class="line"><span class="comment">// 通过where在单表里面查询对应数据，</span></span><br><span class="line"><span class="comment">// 并通过orderby排序(传Student.CodingKeys.age默认.ascending)</span></span><br><span class="line"><span class="keyword">var</span> students <span class="operator">=</span> <span class="keyword">try!</span> sTable<span class="operator">?</span>.getObjects(where: <span class="type">Student</span>.<span class="type">CodingKeys</span>.age <span class="operator">&gt;</span> <span class="number">0</span>, orderBy: [<span class="type">Student</span>.<span class="type">CodingKeys</span>.age.asOrder(by: .descending)])</span><br><span class="line"><span class="built_in">print</span>(students<span class="operator">!</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 直接查询，需要传入指定表</span></span><br><span class="line">students <span class="operator">=</span> <span class="keyword">try!</span> db.getObjects(fromTable: <span class="string">&quot;Student&quot;</span>, where:  <span class="type">Student</span>.<span class="type">CodingKeys</span>.identifier <span class="operator">==</span> <span class="string">&quot;1&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(students<span class="operator">!</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取整表数据</span></span><br><span class="line"><span class="keyword">let</span> t: [<span class="type">Teacher</span>] <span class="operator">=</span> <span class="keyword">try!</span> db.getObjects(fromTable: <span class="string">&quot;Teacher&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(t)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 联表查询与多线程</span></span><br><span class="line"><span class="type">DispatchQueue</span>.global().async &#123;</span><br><span class="line">  <span class="comment">// on: 需要查询的字段（注意需要在多表里面字段名相同的在字段后面加in(table:表名)）</span></span><br><span class="line">  <span class="keyword">let</span> a <span class="operator">=</span> <span class="keyword">try!</span> db.prepareMultiSelect(on: <span class="type">Teacher</span>.<span class="type">CodingKeys</span>.name.in(table: <span class="string">&quot;Student&quot;</span>) ,<span class="type">Student</span>.<span class="type">CodingKeys</span>.age.in(table: <span class="string">&quot;Student&quot;</span>), <span class="type">Teacher</span>.<span class="type">CodingKeys</span>.name.in(table: <span class="string">&quot;Teacher&quot;</span>), fromTables: [<span class="string">&quot;Student&quot;</span>, <span class="string">&quot;Teacher&quot;</span>])</span><br><span class="line">  <span class="comment">// 加where条件语句</span></span><br><span class="line">  a.where(<span class="type">Student</span>.<span class="type">CodingKeys</span>.teacherId.in(table: <span class="string">&quot;Student&quot;</span>) <span class="operator">==</span> <span class="type">Teacher</span>.<span class="type">CodingKeys</span>.identifier.in(table: <span class="string">&quot;Teacher&quot;</span>)<span class="comment">/* &amp;&amp; Student.CodingKeys.identifier.in(table: &quot;Student&quot;) == &quot;2&quot;*/</span>)</span><br><span class="line">  <span class="comment">// 加orderby条件语句</span></span><br><span class="line">  a.order(by: [<span class="type">Student</span>.<span class="type">CodingKeys</span>.age.in(table: <span class="string">&quot;Student&quot;</span>).asOrder(by: .descending)])</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 逐条获取数据</span></span><br><span class="line">  <span class="keyword">while</span> <span class="keyword">let</span> b <span class="operator">=</span> <span class="keyword">try?</span> a.nextMultiObject() &#123;</span><br><span class="line">    <span class="built_in">print</span>(b)</span><br><span class="line">  &#125;</span><br><span class="line">            </span><br><span class="line">  <span class="comment">// 获取所有数据</span></span><br><span class="line"><span class="comment">//            let all = try! a.allMultiObjects()</span></span><br><span class="line"><span class="comment">//            DispatchQueue.main.async &#123;</span></span><br><span class="line"><span class="comment">//                print(all)</span></span><br><span class="line"><span class="comment">//            &#125;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="9-详细文档查看"><a href="#9-详细文档查看" class="headerlink" title="9.详细文档查看"></a>9.详细文档查看</h3>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+    
+<nav id="article-nav">
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/%E7%94%BB%E4%B8%AD%E7%94%BB%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-doc/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    画中画
+                
+            </div>
+        </a>
+    
+    
+        <a href="/2022/03/10/%E6%8A%80%E6%9C%AF%E5%BC%80%E5%8F%91/Swift%20%E5%BC%82%E6%AD%A5%E7%89%B9%E6%80%A7-doc/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Swift 异步特性</div>
+        </a>
+    
+</nav>
+
+
+
+
+
+    
+    
+
+
+
+
+<!-- baidu url auto push script -->
+<script type="text/javascript">
+    !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=window.location.href,o=document.referrer;if(!e.test(r)){var n="//api.share.baidu.com/s.gif";o?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var t=new Image;t.src=n}}(window);
+</script>     
+</section>
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            ypdiOS &copy; 2022 
+            <a rel="license noopener" target="_blank" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/80x15.png" /></a>
+            <br> Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme - <a target="_blank" rel="noopener" href="https://github.com/zthxxx/hexo-theme-Wikitten">wikitten</a>
+            
+                <br>
+                <span id="busuanzi_container_site_pv"><i class="fa fa-eye"></i> <span id="busuanzi_value_site_pv"></span></span>
+                &nbsp;|&nbsp;
+                <span id="busuanzi_container_site_pv"><i class="fa fa-user"></i> <span id="busuanzi_value_site_uv"></span></span>
+            
+        </div>
+    </div>
+</footer>
+
+        
+
+    
+        
+<script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-share.min.js"></script>
+
+        
+<script src="/libs/lightgallery/js/lg-video.min.js"></script>
+
+    
+    
+        
+<script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+
+    
+    
+        <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true,
+            TeX: {
+                equationNumbers: {
+                  autoNumber: 'AMS'
+                }
+            }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+
+
+<!-- Custom Scripts -->
+
+<script src="/js/main.js"></script>
+
+
+    </div>
+</body>
+</html>
